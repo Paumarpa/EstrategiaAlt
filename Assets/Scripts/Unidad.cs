@@ -26,9 +26,12 @@ public class Unidad : MonoBehaviour
     public int dañoAtaque;
     //public int dañoDefensa;
     public int armadura;
+
+    private Casilla[] casillas;
     private void Start()
     {
         gm = FindObjectOfType<GameMaster>();
+        casillas = FindObjectsOfType<Casilla>();
 
     }
 
@@ -113,7 +116,7 @@ public class Unidad : MonoBehaviour
             return;
         }
 
-        Casilla[] casillas = FindObjectsOfType<Casilla>();
+        
         foreach (Casilla casilla in casillas)
         {
             //ahora en valor absoluto, falta a*
