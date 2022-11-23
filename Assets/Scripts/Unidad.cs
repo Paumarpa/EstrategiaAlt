@@ -23,8 +23,8 @@ public class Unidad : MonoBehaviour
 
     //stats
     public int vida;
-    public int dañoAtaque;
-    //public int dañoDefensa;
+    public int danoAtaque;
+    //public int danoDefensa;
     public int armadura;
 
     private Casilla[] casillas;
@@ -78,18 +78,18 @@ public class Unidad : MonoBehaviour
     {
         haAtacado = true;
 
-        int daño = dañoAtaque - enemigo.armadura;
-        //miDaño = enemigo.dañoDefensa - armadura;
+        int dano = danoAtaque - enemigo.armadura;
+        //miDano = enemigo.danoDefensa - armadura;
 
-        if(dañoAtaque >= 1)
+        if(danoAtaque >= 1)
         {
-            enemigo.vida -= dañoAtaque;
+            enemigo.vida -= danoAtaque;
         }
 
         /*
-         if(miDaño >= 1)
+         if(miDano >= 1)
         {
-            vida -= miDaño;
+            vida -= miDano;
         }
          */
 
