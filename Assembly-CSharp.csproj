@@ -41,7 +41,10 @@
      <Compile Include="Assets/Scripts/Pathfinding/Grid.cs" />
      <Compile Include="Assets/Scripts/Pathfinding/Monticulo.cs" />
      <Compile Include="Assets/Scripts/GameMaster.cs" />
+     <Compile Include="Assets/Scripts/IAManager.cs" />
      <Compile Include="Assets/Scripts/Pathfinding/Nodo.cs" />
+     <Compile Include="Assets/Scripts/ActionTypes.cs" />
+     <Compile Include="Assets/Scripts/StrategyTypes.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/home/xulioxesus/Unity/Hub/Editor/2021.3.10f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

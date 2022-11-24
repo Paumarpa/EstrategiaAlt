@@ -24,7 +24,7 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    void finalizarTurno()
+    public void finalizarTurno()
     {
         if (turno == 1)
         {
@@ -48,5 +48,9 @@ public class GameMaster : MonoBehaviour
             unidad.armaIcono.SetActive(false);
             unidad.haAtacado = false;
         }
+    }
+
+    public bool isCurrentTeamIA(int id){
+        return turno == id;
     }
 }
