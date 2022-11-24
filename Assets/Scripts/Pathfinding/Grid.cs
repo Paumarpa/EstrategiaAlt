@@ -12,7 +12,7 @@ public class Grid : MonoBehaviour {
     Nodo[,] grid;
 
     float diametroNodo;
-    int ladoGridX, ladoGridY;
+    public int ladoGridX, ladoGridY;
 
     
     void Awake()
@@ -108,5 +108,9 @@ public class Grid : MonoBehaviour {
                // Debug.Log(n.posGlobal);
             }
         }
+    }
+
+    public Vector3 GetGlobalPosition(int x, int y){
+        return grid[x,y].posGlobal;
     }
 }
