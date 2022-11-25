@@ -18,6 +18,7 @@ public class Unidad : MonoBehaviour
     //ataque 
     public int rangoAtaque;
     List<Unidad> enemigosEnRango = new List<Unidad>();
+
     public bool haAtacado;//solo puede atacar 1 vez por turno
     public GameObject armaIcono;
 
@@ -163,11 +164,12 @@ public class Unidad : MonoBehaviour
     public void Mover(Vector3 objetivo)
     {
         gm.resetCasillas();
-
+        ispathfinding = true;
         encontrarCamino.pedirCamino(transform.position, objetivo, OnCaminEnc);
         
         //StartCoroutine(EMover(objetivo));
     }
+  
 
 
 
@@ -208,7 +210,6 @@ public class Unidad : MonoBehaviour
                 indiceObj++;
                 if (indiceObj >= camino.Length)
                 {
-                    seHaMovido = true;
                     ResetIconosArmas();
                     GetEnemigos();
                     yield break;
