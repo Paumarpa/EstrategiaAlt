@@ -29,16 +29,15 @@ public class IAManager : MonoBehaviour
     {
         if (isMyTurn()){
             if (ActionManager.isActionAvailable(mana,coins)){
-                doAction();
+                StartCoroutine("doAction");
             }
             else{
                 GMS.finalizarTurno();
-                Debug.Log("IA: " + "Fin de mi turno.");
             }
         }
     }
 
-    private void doAction(){
+    IEnumerator doAction(){
         Action action = ActionManager.getAction(mana,coins);
 
         switch (action.getType())
@@ -50,6 +49,7 @@ public class IAManager : MonoBehaviour
                 Debug.Log("Nada que hacer" + " Mana: " + mana + " Coins: " + coins);
             break;
         }
+        yield return new WaitForSeconds(2.0f);
     }
 
     private bool isMyTurn(){

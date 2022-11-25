@@ -16,8 +16,12 @@ public static class ActionManager{
     static ActionManager(){
         actions = new List<Action>();
         actions.Add(new Action(ActionTypes.NONE,0,0));
+        actions.Add(new Action(ActionTypes.BUILD_BARRACKS,2,1000));
         actions.Add(new Action(ActionTypes.BUILD_COLLECTOR,1,50));
-        actions.Add(new Action(ActionTypes.MOVE_UNIT,1,0));
+        actions.Add(new Action(ActionTypes.MOVE_UNIT,2,1000));
+        actions.Add(new Action(ActionTypes.ATTACK_UNIT,2,1000));
+        actions.Add(new Action(ActionTypes.ATTACK_BUILDING,2,1000));
+        actions.Add(new Action(ActionTypes.CREATE_UNIT,2,1000));
     }
 
     public static Action getAction(int manaAvailable, int coinAvailable){
