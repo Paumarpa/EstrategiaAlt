@@ -66,7 +66,7 @@ public class pathfinding : MonoBehaviour
 
             foreach(Nodo vecino in grid.GetNodosVecinos(actual))
             {
-                if(!vecino.accesible || closedSer.Contains(vecino))
+                if(!grid.esAccesible(vecino.posGlobal) || closedSer.Contains(vecino))
                 {
                     continue;
                 }

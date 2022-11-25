@@ -23,6 +23,7 @@ public class Grid : MonoBehaviour {
         crearGrid();
     }
 
+    
     public int maxSize
     {
         get{
@@ -77,7 +78,7 @@ public class Grid : MonoBehaviour {
         {
             for (int y = -1; y <= 1; y++)
             {
-                if (Mathf.Abs(x) -Mathf.Abs(y) == 0)
+                if (Mathf.Abs(x) - Mathf.Abs(y) == 0)
                     continue;
 
                 int verX = nodo.gridX + x;

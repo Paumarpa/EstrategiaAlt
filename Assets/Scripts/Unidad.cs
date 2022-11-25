@@ -165,6 +165,7 @@ public class Unidad : MonoBehaviour
         gm.resetCasillas();
 
         encontrarCamino.pedirCamino(transform.position, objetivo, OnCaminEnc);
+        
         //StartCoroutine(EMover(objetivo));
     }
 
@@ -198,15 +199,18 @@ public class Unidad : MonoBehaviour
 
     IEnumerator seguirCamino()
     {
-        
+        ispathfinding = true;
         Vector3 currentWaypoint = camino[0];
-        while (true)
+        while (ispathfinding)
         {
             if (transform.position == currentWaypoint)
             {
                 indiceObj++;
                 if (indiceObj >= camino.Length)
                 {
+                    seHaMovido = true;
+                    ResetIconosArmas();
+                    GetEnemigos();
                     yield break;
                 }
                 currentWaypoint = camino[indiceObj];
@@ -214,13 +218,9 @@ public class Unidad : MonoBehaviour
 
             yield return null;
             transform.position = Vector2.MoveTowards(transform.position, currentWaypoint, velocidad * Time.deltaTime);
+     
+            
+        }  
 
-        }
-        while (true)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, camino[camino.Length], velocidad * Time.deltaTime);
-
-        }
-        
     }
 }

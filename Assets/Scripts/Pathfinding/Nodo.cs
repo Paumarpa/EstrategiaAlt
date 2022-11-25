@@ -13,6 +13,7 @@ public class Nodo  : IHeapItem<Nodo> {
     public int gridY;
     public Nodo padre;
     int heapIndex;
+    public LayerMask inaccesible;
 
     public Nodo(bool acces,Vector3 _pos, int _gridX, int _gridY){
         accesible = acces;
@@ -21,7 +22,15 @@ public class Nodo  : IHeapItem<Nodo> {
         gridY = _gridY;
 
     }
-
+    public bool esAccesible(Vector3 puntoNodo)
+    {
+        Collider2D obstaculo = Physics2D.OverlapCircle(puntoNodo, 0.2f, inaccesible);
+        if (obstaculo != null)
+        {
+            return false;
+        }
+        else return true;
+    }
     public int costeF {
         get {
             return costeG + costeH;
