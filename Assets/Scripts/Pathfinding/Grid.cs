@@ -92,7 +92,7 @@ public class Grid : MonoBehaviour {
         return vecinos;
     }
 
-    public List<Nodo> camino;
+    //public List<Nodo> camino;
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(tamañoGrid.x, tamañoGrid.y, 1));
@@ -100,9 +100,9 @@ public class Grid : MonoBehaviour {
         if(grid != null ){
             foreach (Nodo n in grid){
                 Gizmos.color = (n.accesible)? Color.white : Color.red;
-                if (camino != null)
+                /*if (camino != null)
                     if (camino.Contains(n))
-                        Gizmos.color = Color.black;
+                        Gizmos.color = Color.black;*/
 
                 Gizmos.DrawCube(n.posGlobal, Vector3.one * (diametroNodo-.1f));
                // Debug.Log(n.posGlobal);

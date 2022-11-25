@@ -27,6 +27,12 @@ public class Unidad : MonoBehaviour
     //public int dañoDefensa;
     public int armadura;
 
+    //pathfinding
+    Vector3[] camino;
+    private int indiceObj;
+    bool ispathfinding = false;
+    encontrarCamino encontrarC;
+
     private Casilla[] casillas;
     private void Start()
     {
@@ -154,13 +160,26 @@ public class Unidad : MonoBehaviour
         }
     }
 
-    public void Mover(Vector2 objetivo)
+    public void Mover(Vector3 objetivo)
     {
         gm.resetCasillas();
-        StartCoroutine(EMover(objetivo));
+
+        encontrarCamino.pedirCamino(transform.position, objetivo, OnCaminEnc);
+        //StartCoroutine(EMover(objetivo));
     }
 
-    //no por camino optimo, movimiento linear
+
+
+    private void OnCaminEnc(Vector3[] newCamino, bool exito)
+    {
+        if (exito)
+        {
+            camino = newCamino;
+            indiceObj = 0;
+            StopCoroutine("seguirCamino");
+            StartCoroutine("seguirCamino");
+        }
+    }
     IEnumerator EMover(Vector2 pos)
     {
         while (transform.position.x != pos.x ){
@@ -175,5 +194,33 @@ public class Unidad : MonoBehaviour
         seHaMovido = true;
         ResetIconosArmas();
         GetEnemigos();
+    }
+
+    IEnumerator seguirCamino()
+    {
+        
+        Vector3 currentWaypoint = camino[0];
+        while (true)
+        {
+            if (transform.position == currentWaypoint)
+            {
+                indiceObj++;
+                if (indiceObj >= camino.Length)
+                {
+                    yield break;
+                }
+                currentWaypoint = camino[indiceObj];
+            }
+
+            yield return null;
+            transform.position = Vector2.MoveTowards(transform.position, currentWaypoint, velocidad * Time.deltaTime);
+
+        }
+        while (true)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, camino[camino.Length], velocidad * Time.deltaTime);
+
+        }
+        
     }
 }

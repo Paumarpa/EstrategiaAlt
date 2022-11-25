@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scripts\GameMaster.cs" />
     <Compile Include="Assets\Scripts\Pathfinding\Nodo.cs" />
     <Compile Include="Assets\Scripts\Pathfinding\pathfinding.cs" />
+    <Compile Include="Assets\Scripts\Pathfinding\encontrarCamino.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

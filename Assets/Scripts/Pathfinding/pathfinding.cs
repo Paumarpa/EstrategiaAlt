@@ -5,29 +5,29 @@ using System;
 public class pathfinding : MonoBehaviour
 {
 
-    public Transform seeker, target;
+    //public Transform seeker, target;
     Grid grid;
-    //encontrarCamino encontrarC;
+    encontrarCamino encontrarC;
 
     private void Awake()
     {
-        //encontrarC = GetComponent<encontrarCamino>();
+        encontrarC = GetComponent<encontrarCamino>();
         grid = GetComponent<Grid>();
     }
-    private void Update()
+   /* private void Update()
     {
         findPath(seeker.position, target.position);
-    }
-
-    /*public void StartFindPath(Vector3 inicio, Vector3 fin)
-    {
-        StartCoroutine(findPath(inicio, fin));
     }*/
 
-    void findPath(Vector3 origen,Vector3 destino)
+    public void StartFindPath(Vector3 inicio, Vector3 fin)
     {
-        //Vector3[] waypoints = new Vector3[0];
-        //bool exito = false;
+        StartCoroutine(findPath(inicio, fin));
+    }
+
+    IEnumerator findPath(Vector3 origen,Vector2 destino)
+    {
+        Vector3[] waypoints = new Vector3[0];
+        bool exito = false;
 
         Nodo nodoOrigen = grid.NodoDesdeCoordenadaGlobal(origen);
         Nodo nodoDestino = grid.NodoDesdeCoordenadaGlobal(destino);
@@ -59,8 +59,8 @@ public class pathfinding : MonoBehaviour
             if(actual == nodoDestino)
             {
 
-                //exito = true;
-                devolverCamino(nodoOrigen, nodoDestino);
+                exito = true;
+                //waypoints = devolverCamino(nodoOrigen, nodoDestino);
                 break;
             }
 
@@ -88,19 +88,20 @@ public class pathfinding : MonoBehaviour
                 }
             }
         }
-        //yield return null;
-        /*
+        //return null;
+        yield return null;
+        
         if (exito)
         {
              waypoints = devolverCamino(nodoOrigen, nodoDestino);
-            return waypoints;
+            
         }
        
-        return null; */
-        //encontrarC.caminoProcesado(waypoints, exito);
+         
+        encontrarC.caminoProcesado(waypoints, exito);
     }
 
-    void devolverCamino(Nodo inicio, Nodo fin)
+    Vector3[] devolverCamino(Nodo inicio, Nodo fin)
     {
         List<Nodo> camino = new List<Nodo>();
         Nodo actual = fin;
@@ -111,30 +112,26 @@ public class pathfinding : MonoBehaviour
             actual = actual.padre;
         }
         camino.Add(inicio);
-        //Vector3[] waypoints = simplificarCamino(camino);
-        
-        camino.Reverse();
-        //Array.Reverse(waypoints);
-        //return waypoints;
-        grid.camino = camino;
+        inicio.padre = actual;
+
+        Vector3[] waypoints = simplificarCamino(camino);
+       
+        //camino.Reverse();
+        Array.Reverse(waypoints);
+        return waypoints;
+        //grid.camino = camino;
     }
 
     Vector3[] simplificarCamino(List<Nodo> camino)
     {
         List<Vector3> waypoints = new List<Vector3>();
-        Vector2 dirAntigua = Vector2.zero;
 
 
-        for (int i= 1; i< camino.Count; i++)
+        for (int i= 0; i< camino.Count; i++)
         {
-            Vector2 dirNueva = new Vector2(camino[i - 1].gridX - camino[i].gridX, camino[i - 1].gridY - camino[i].gridY);
-            if(dirAntigua != dirNueva)
-            {
                 waypoints.Add(camino[i].posGlobal);
-                
-            }
-            dirAntigua = dirNueva;
         }
+
         return waypoints.ToArray();
     }
 

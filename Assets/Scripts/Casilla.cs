@@ -13,6 +13,7 @@ public class Casilla : MonoBehaviour
     public Color colorHighlight;
 
     public bool accesible;
+    pathfinding pathfinding;
 
     GameMaster gm;
     void Start()
@@ -67,12 +68,9 @@ public class Casilla : MonoBehaviour
     {
         if (accesible && gm.unidadSeleccionada != null)
         {
-            gm.unidadSeleccionada.Mover(this.transform.position);
+            gm.unidadSeleccionada.Mover(transform.position);
         }
     }
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }
