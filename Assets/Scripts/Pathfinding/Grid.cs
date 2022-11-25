@@ -33,11 +33,11 @@ public class Grid : MonoBehaviour {
     {
 
         grid = new Nodo[ladoGridX, ladoGridY];
-        Vector3 esquinaInferiorIzquierda = transform.position - (Vector3.right * tamañoGrid.x/2) - (Vector3.up * tamañoGrid.y/2);
+        Vector2 esquinaInferiorIzquierda = transform.position - (Vector3.right * tamañoGrid.x/2) - (Vector3.up * tamañoGrid.y/2);
 
         for (int x = 0; x< ladoGridX; x++){
             for (int y = 0; y < ladoGridY; y++){
-                Vector3 puntoNodo = esquinaInferiorIzquierda + Vector3.right *(x * diametroNodo + radioNodo) + Vector3.up * (y * diametroNodo + radioNodo);
+                Vector2 puntoNodo = esquinaInferiorIzquierda + Vector2.right *(x * diametroNodo + radioNodo) + Vector2.up * (y * diametroNodo + radioNodo);
                 bool accesible = esAccesible(puntoNodo);
                 grid[x, y] = new Nodo(accesible, puntoNodo,x, y);
 
@@ -59,7 +59,7 @@ public class Grid : MonoBehaviour {
     public Nodo NodoDesdeCoordenadaGlobal(Vector3 posGlobal)
     {
         float porcentajeX = (posGlobal.x + tamañoGrid.x / 2) / tamañoGrid.x;
-        float porcentajeY = (posGlobal.z + tamañoGrid.y / 2) / tamañoGrid.y;
+        float porcentajeY = (posGlobal.y + tamañoGrid.y / 2) / tamañoGrid.y;
         porcentajeX = Mathf.Clamp01(porcentajeX);
         porcentajeY = Mathf.Clamp01(porcentajeY);
 
@@ -77,7 +77,7 @@ public class Grid : MonoBehaviour {
         {
             for (int y = -1; y <= 1; y++)
             {
-                if (x == 0 && y == 0)
+                if (Mathf.Abs(x) -Mathf.Abs(y) == 0)
                     continue;
 
                 int verX = nodo.gridX + x;
@@ -92,17 +92,17 @@ public class Grid : MonoBehaviour {
         return vecinos;
     }
 
-    //public List<Nodo> camino;
+    public List<Nodo> camino;
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(tamañoGrid.x, tamañoGrid.y, 1));
 
-        if(grid != null && enseñarGrid ){
+        if(grid != null ){
             foreach (Nodo n in grid){
                 Gizmos.color = (n.accesible)? Color.white : Color.red;
-               /* if (camino != null)
+                if (camino != null)
                     if (camino.Contains(n))
-                        Gizmos.color = Color.black;*/
+                        Gizmos.color = Color.black;
 
                 Gizmos.DrawCube(n.posGlobal, Vector3.one * (diametroNodo-.1f));
                // Debug.Log(n.posGlobal);
