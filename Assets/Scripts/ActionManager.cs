@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class ActionManager{
 
-    static List<Action> actions;
+    public static List<Action> actions;
     /*BUILD_TOWER,
         BUILD_BARRACKS,
         BUILD_COLLECTOR,
@@ -16,6 +16,7 @@ public static class ActionManager{
     static ActionManager(){
         actions = new List<Action>();
         actions.Add(new Action(ActionTypes.NONE,0,0));
+        actions.Add(new Action(ActionTypes.BUILD_TOWER,2,1000));
         actions.Add(new Action(ActionTypes.BUILD_BARRACKS,2,1000));
         actions.Add(new Action(ActionTypes.BUILD_COLLECTOR,1,50));
         actions.Add(new Action(ActionTypes.MOVE_UNIT,2,1000));
