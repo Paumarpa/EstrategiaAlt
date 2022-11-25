@@ -183,7 +183,7 @@ public class Unidad : MonoBehaviour
             StartCoroutine("seguirCamino");
         }
     }
-    IEnumerator EMover(Vector2 pos)
+    /*IEnumerator EMover(Vector2 pos)
     {
         while (transform.position.x != pos.x ){
             transform.position = Vector2.MoveTowards(transform.position, new Vector2(pos.x, transform.position.y), velocidad * Time.deltaTime);
@@ -197,7 +197,7 @@ public class Unidad : MonoBehaviour
         seHaMovido = true;
         ResetIconosArmas();
         GetEnemigos();
-    }
+    }*/
 
     IEnumerator seguirCamino()
     {
