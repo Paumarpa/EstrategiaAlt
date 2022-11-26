@@ -27,6 +27,12 @@ public class Unidad : MonoBehaviour
     //public int danoDefensa;
     public int armadura;
 
+    //pathfinding
+    Vector3[] camino;
+    private int indiceObj;
+    bool ispathfinding = false;
+    encontrarCamino encontrarC;
+
     private Casilla[] casillas;
     private void Start()
     {
@@ -157,7 +163,9 @@ public class Unidad : MonoBehaviour
     public void Mover(Vector2 objetivo)
     {
         gm.resetCasillas();
-        StartCoroutine(EMover(objetivo));
+        ispathfinding = true;
+        encontrarCamino.pedirCamino(transform.position, objetivo, OnCaminEnc);
+        //StartCoroutine(EMover(objetivo));
     }
 
     //no por camino optimo, movimiento linear
@@ -175,5 +183,42 @@ public class Unidad : MonoBehaviour
         seHaMovido = true;
         ResetIconosArmas();
         GetEnemigos();
+    }
+
+    private void OnCaminEnc(Vector3[] newCamino, bool exito)
+    {
+        if (exito)
+        {
+            camino = newCamino;
+            indiceObj = 0;
+            StopCoroutine("seguirCamino");
+            StartCoroutine("seguirCamino");
+        }
+    }
+
+    IEnumerator seguirCamino()
+    {
+        ispathfinding = true;
+        Vector3 currentWaypoint = camino[0];
+        while (ispathfinding)
+        {
+            if (transform.position == currentWaypoint)
+            {
+                indiceObj++;
+                if (indiceObj >= camino.Length)
+                {
+                    ResetIconosArmas();
+                    GetEnemigos();
+                    yield break;
+                }
+                currentWaypoint = camino[indiceObj];
+            }
+
+            yield return null;
+            transform.position = Vector2.MoveTowards(transform.position, currentWaypoint, velocidad * Time.deltaTime);
+
+
+        }
+
     }
 }

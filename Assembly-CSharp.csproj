@@ -47,6 +47,8 @@
      <Compile Include="Assets/Scripts/GameMaster.cs" />
      <Compile Include="Assets/Scripts/IAManager.cs" />
      <Compile Include="Assets/Scripts/Pathfinding/Nodo.cs" />
+     <Compile Include="Assets/Scripts/Pathfinding/encontrarCamino.cs" />
+     <Compile Include="Assets/Scripts/Pathfinding/pathfinding.cs" />
      <Compile Include="Assets/Scripts/ActionManager.cs" />
      <Compile Include="Assets/Scripts/ActionTypes.cs" />
      <Compile Include="Assets/Scripts/StrategyManager.cs" />

@@ -13,6 +13,7 @@ public class Nodo  : IHeapItem<Nodo> {
     public int gridY;
     public Nodo padre;
     int heapIndex;
+    
 
     public Nodo(bool acces,Vector3 _pos, int _gridX, int _gridY){
         accesible = acces;
@@ -21,7 +22,7 @@ public class Nodo  : IHeapItem<Nodo> {
         gridY = _gridY;
 
     }
-
+   
     public int costeF {
         get {
             return costeG + costeH;
