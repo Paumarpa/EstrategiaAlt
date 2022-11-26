@@ -41,6 +41,7 @@
      <Compile Include="Assets/Scripts/Casilla.cs" />
      <Compile Include="Assets/Scripts/Pathfinding/Grid.cs" />
      <Compile Include="Assets/Scripts/UIStatsManager.cs" />
+     <Compile Include="Assets/Scripts/Strategy.cs" />
      <Compile Include="Assets/Scripts/Action.cs" />
      <Compile Include="Assets/Scripts/Pathfinding/Monticulo.cs" />
      <Compile Include="Assets/Scripts/GameMaster.cs" />
@@ -49,7 +50,6 @@
      <Compile Include="Assets/Scripts/ActionManager.cs" />
      <Compile Include="Assets/Scripts/ActionTypes.cs" />
      <Compile Include="Assets/Scripts/StrategyManager.cs" />
-     <Compile Include="Assets/Scripts/Strategy.cs" />
      <None Include="Assets/TextMesh Pro/Shaders/TMPro.cginc" />
      <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets/TextMesh Pro/Shaders/TMP_Bitmap.shader" />
