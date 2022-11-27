@@ -16,12 +16,15 @@ public class IAManager : MonoBehaviour
 
     private Grid grid;
 
+    private Vector2Int townHallLocation;
+
     // Start is called before the first frame update
     void Start()
     {
         currentAction = ActionTypes.NONE;
         currentStrategy = StrategyTypes.GROW;
         grid = GameObject.Find("Pathfinding").GetComponent<Grid>();
+        createTownHall();
     }
 
     // Update is called once per frame
@@ -99,10 +102,74 @@ public class IAManager : MonoBehaviour
 
     public void createCollectorAction(){
         Debug.Log("IA: " + "Create Collector Action");
-        Vector2Int pos = new Vector2Int(Random.Range(0,grid.ladoGridX-1), 0 );
-        GameObject collector = Instantiate(Resources.Load("Prefabs/Collector"), grid.GetGlobalPosition(pos.x,pos.y), Quaternion.identity) as GameObject;
-        collector.GetComponent<Unidad>().numJugador = id;
-        decMana(ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getManaCost());
-        decCoins(ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getCoinCost());
+        //Vector2Int location = new Vector2Int(Random.Range(0,grid.ladoGridX-1), 0 );
+
+        Vector2Int location = getSlotNearTownHall();
+
+        if (isValidLocation(location)){
+            GameObject collector = Instantiate(Resources.Load("Prefabs/Collector"), grid.GetGlobalPosition(location.x,location.y), Quaternion.identity) as GameObject;
+            collector.transform.parent = transform;
+            collector.GetComponent<Unidad>().numJugador = id;
+            collector.GetComponent<Unidad>().Location = location;
+            decMana(ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getManaCost());
+            decCoins(ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getCoinCost());
+        }else{
+            Debug.Log("IA: " + "Imposible construir");
+        }
+    }
+
+    public void createTownHall()
+    {
+        Vector2Int location;
+
+        if (id == 1){
+            location = new Vector2Int(Random.Range(0,grid.ladoGridX-1), 0 ); 
+        }else{
+            location = new Vector2Int(Random.Range(0,grid.ladoGridX-1), grid.ladoGridY -1 );
+        }
+        
+        GameObject townhall = Instantiate(Resources.Load("Prefabs/TownHall"), grid.GetGlobalPosition(location.x,location.y), Quaternion.identity) as GameObject;        
+        townhall.GetComponent<Unidad>().numJugador = id;
+        townhall.GetComponent<Unidad>().Location = location;
+        townhall.transform.parent = transform;
+        townHallLocation = location;
+        //cleanTownHallUbication(TH1);
+        //cleanTownHallUbication(TH2);
+    }
+
+    Vector2Int getSlotNearTownHall(){
+        int radius = 1;
+
+        while (radius < 5){
+            for (int i = townHallLocation.x - radius; i <= townHallLocation.x + radius; i++)
+            {
+                for (int j = townHallLocation.y - radius; j <= townHallLocation.y + radius; j++)
+                {
+                    if (isValidLocation(i,j)){
+                        return new Vector2Int(i,j);
+                    }
+                }
+            }
+            radius++;
+        }
+
+        return new Vector2Int(-1,-1);
+    }
+
+    bool isValidLocation(int x, int y){
+        if (x < 0 || y < 0 || x >= grid.ladoGridX || y >= grid.ladoGridY){
+            return false;
+        }
+
+        return grid.grid[x,y].accesible;
+
+    }
+
+    bool isValidLocation(Vector2Int location){
+
+        int x = location.x;
+        int y = location.y;
+
+        return isValidLocation(x,y);
     }
 }

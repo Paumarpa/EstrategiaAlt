@@ -43,15 +43,15 @@
      <Compile Include="Assets/Scripts/UIStatsManager.cs" />
      <Compile Include="Assets/Scripts/Strategy.cs" />
      <Compile Include="Assets/Scripts/Action.cs" />
+     <Compile Include="Assets/Scripts/Pathfinding/encontrarCamino.cs" />
      <Compile Include="Assets/Scripts/Pathfinding/Monticulo.cs" />
      <Compile Include="Assets/Scripts/GameMaster.cs" />
      <Compile Include="Assets/Scripts/IAManager.cs" />
      <Compile Include="Assets/Scripts/Pathfinding/Nodo.cs" />
-     <Compile Include="Assets/Scripts/Pathfinding/encontrarCamino.cs" />
-     <Compile Include="Assets/Scripts/Pathfinding/pathfinding.cs" />
      <Compile Include="Assets/Scripts/ActionManager.cs" />
      <Compile Include="Assets/Scripts/ActionTypes.cs" />
      <Compile Include="Assets/Scripts/StrategyManager.cs" />
+     <Compile Include="Assets/Scripts/Pathfinding/pathfinding.cs" />
      <None Include="Assets/TextMesh Pro/Shaders/TMPro.cginc" />
      <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets/TextMesh Pro/Shaders/TMP_Bitmap.shader" />

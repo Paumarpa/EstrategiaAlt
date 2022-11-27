@@ -33,6 +33,8 @@ public class Unidad : MonoBehaviour
     bool ispathfinding = false;
     encontrarCamino encontrarC;
 
+    public Vector2Int Location;
+
     private Casilla[] casillas;
     private void Start()
     {

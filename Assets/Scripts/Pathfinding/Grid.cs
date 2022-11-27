@@ -9,7 +9,7 @@ public class Grid : MonoBehaviour {
     public float radioNodo;
     public LayerMask inaccesible;
 
-    Nodo[,] grid;
+    public Nodo[,] grid;
 
     float diametroNodo;
     public int ladoGridX, ladoGridY;
