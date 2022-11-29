@@ -20,6 +20,11 @@ public class IAManager : MonoBehaviour
 
     private Vector2Int townHallLocation;
 
+    public const int COINS_BY_COLLECTOR =  50;
+
+    private bool strategyDecided = false;
+    private Strategy strategy;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,8 +38,11 @@ public class IAManager : MonoBehaviour
     void FixedUpdate()
     {
         if (isMyTurn()){
+            if (!strategyDecided){
+                DecideStrategy();
+            }
             Debug.Log("Turno id: " + id);
-            if (ActionManager.isActionAvailable(mana,coins)){
+            if (strategy.isActionAvailable(mana,coins)){
                 StartCoroutine("doAction");
             }
             else
@@ -44,11 +52,22 @@ public class IAManager : MonoBehaviour
         }
     }
 
+    void DecideStrategy(){
+        int collectors = getNum("Collector");
+        int towers = getNum("Tower");
+        int barracks = getNum("Barracks");
+        int units = getNum("Unit");
+        strategy = StrategyManager.getStrategy(collectors,towers,barracks,units, false, false);
+        strategyDecided = true;
+        Debug.Log("IA Strategy " + strategy);
+    }
+
     private void FinalizarTurno()
     {
         GMS.finalizarTurno();
         Debug.Log("Fin Turno id: " + id);
         UpdateResourcesNextTurn();
+        strategyDecided = false;
     }
 
     void UpdateResourcesNextTurn(){
@@ -58,13 +77,13 @@ public class IAManager : MonoBehaviour
         foreach (Transform child in transform)
         {
             if (child.gameObject.tag == "Collector"){
-                incCoins(200);
+                incCoins(COINS_BY_COLLECTOR);
             }
         }
     }
 
     IEnumerator doAction(){
-        Action action = ActionManager.getAction(mana,coins);
+        Action action = strategy.getAction(mana,coins);
 
         Debug.Log("doAction: " + action);
 
@@ -224,4 +243,19 @@ public class IAManager : MonoBehaviour
 
         return isValidLocation(x,y);
     }
+
+    int getNum(string type){
+
+        int resultado = 0;
+
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.tag == "Collector"){
+                resultado++;
+            }
+        }
+
+        return resultado;
+    }
+
 }
