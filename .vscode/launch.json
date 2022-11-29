@@ -7,7 +7,7 @@
         {
             "name": "Unity Editor",
             "type": "unity",
-            "path": "/home/xulioxesus/Documentos/GitHub/xulioxesus/EstrategiaAlt/Library/EditorInstance.json",
+            "path": "Documentos/GitHub/xulioxesus/EstrategiaAlt/Library/EditorInstance.json",
             "request": "launch"
         },
         {

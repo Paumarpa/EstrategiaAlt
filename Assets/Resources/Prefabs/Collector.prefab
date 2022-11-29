@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2529332519181101705}
   m_Layer: 6
   m_Name: Collector
-  m_TagString: Untagged
+  m_TagString: Collector
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,6 +109,7 @@ MonoBehaviour:
   vida: 20
   danoAtaque: 0
   armadura: 0
+  Location: {x: 0, y: 0}
 --- !u!61 &2529332519181101705
 BoxCollider2D:
   m_ObjectHideFlags: 0

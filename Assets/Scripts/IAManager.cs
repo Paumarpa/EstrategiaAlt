@@ -6,6 +6,8 @@ public class IAManager : MonoBehaviour
 {
     public int mana = 1;
     public int coins = 50;
+
+    public int turnos = 1;
     public GameMaster GMS;
     public int id = 2;
 
@@ -36,6 +38,19 @@ public class IAManager : MonoBehaviour
             }
             else{
                 GMS.finalizarTurno();
+                UpdateResourcesNextTurn();
+            }
+        }
+    }
+
+    void UpdateResourcesNextTurn(){
+        turnos++;
+        incMana(turnos);
+
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.tag == "Collector"){
+                incCoins(200);
             }
         }
     }
