@@ -128,6 +128,8 @@ public class IAManager : MonoBehaviour
             collector.GetComponent<Unidad>().Location = location;
             decMana(ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getManaCost());
             decCoins(ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getCoinCost());
+            grid.grid[location.x,location.y].accesible = false;
+            
         }else{
             Debug.Log("IA: " + "Imposible construir");
         }
@@ -148,6 +150,8 @@ public class IAManager : MonoBehaviour
         townhall.GetComponent<Unidad>().Location = location;
         townhall.transform.parent = transform;
         townHallLocation = location;
+
+        grid.grid[location.x,location.y].accesible = false;
         //cleanTownHallUbication(TH1);
         //cleanTownHallUbication(TH2);
     }
