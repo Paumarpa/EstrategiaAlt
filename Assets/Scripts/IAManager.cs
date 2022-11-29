@@ -33,14 +33,22 @@ public class IAManager : MonoBehaviour
     void FixedUpdate()
     {
         if (isMyTurn()){
+            Debug.Log("Turno id: " + id);
             if (ActionManager.isActionAvailable(mana,coins)){
                 StartCoroutine("doAction");
             }
-            else{
-                GMS.finalizarTurno();
-                UpdateResourcesNextTurn();
+            else
+            {
+                FinalizarTurno();
             }
         }
+    }
+
+    private void FinalizarTurno()
+    {
+        GMS.finalizarTurno();
+        Debug.Log("Fin Turno id: " + id);
+        UpdateResourcesNextTurn();
     }
 
     void UpdateResourcesNextTurn(){
@@ -58,14 +66,23 @@ public class IAManager : MonoBehaviour
     IEnumerator doAction(){
         Action action = ActionManager.getAction(mana,coins);
 
+        Debug.Log("doAction: " + action);
+
         switch (action.getType())
         {
             case ActionTypes.BUILD_COLLECTOR:
-                createCollectorAction();
+                createBuildingAction(action);
+                break;
+            case ActionTypes.BUILD_TOWER:
+                createBuildingAction(action);
+                break;
+            case ActionTypes.BUILD_BARRACKS:
+                createBuildingAction(action);
                 break;
             default:
                 Debug.Log("Nada que hacer" + " Mana: " + mana + " Coins: " + coins);
-            break;
+                FinalizarTurno();
+                break;
         }
         yield return new WaitForSeconds(2.0f);
     }
@@ -88,7 +105,6 @@ public class IAManager : MonoBehaviour
 
     public void decMana(int value = 1){
         mana -= value;
-        Debug.Log("IA: " + "Gastando Maná: " + value);
         if (mana < 0){
             mana = 0;
         }
@@ -115,23 +131,40 @@ public class IAManager : MonoBehaviour
         decMana();
     }
 
-    public void createCollectorAction(){
-        Debug.Log("IA: " + "Create Collector Action");
-        //Vector2Int location = new Vector2Int(Random.Range(0,grid.ladoGridX-1), 0 );
+    public void createBuildingAction(Action action){
+        Debug.Log("IA Create Building: " + action);
+
+        string resource;
+
+        switch (action.getType())
+        {
+            case ActionTypes.BUILD_COLLECTOR:
+                resource = "Prefabs/Collector";
+                break;
+            case ActionTypes.BUILD_TOWER:
+                resource = "Prefabs/Tower";
+                break;
+            case ActionTypes.BUILD_BARRACKS:
+                resource = "Prefabs/Barracks";
+                break;
+            default:
+                return;
+        }
 
         Vector2Int location = getSlotNearTownHall();
 
         if (isValidLocation(location)){
-            GameObject collector = Instantiate(Resources.Load("Prefabs/Collector"), grid.GetGlobalPosition(location.x,location.y), Quaternion.identity) as GameObject;
-            collector.transform.parent = transform;
-            collector.GetComponent<Unidad>().numJugador = id;
-            collector.GetComponent<Unidad>().Location = location;
-            decMana(ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getManaCost());
-            decCoins(ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getCoinCost());
+            GameObject building = Instantiate(Resources.Load(resource), grid.GetGlobalPosition(location.x,location.y), Quaternion.identity) as GameObject;
+            building.transform.parent = transform;
+            building.GetComponent<Unidad>().numJugador = id;
+            building.GetComponent<Unidad>().Location = location;
+            decMana(ActionManager.getActionSpecifications(action.getType()).getManaCost());
+            decCoins(ActionManager.getActionSpecifications(action.getType()).getCoinCost());
             grid.grid[location.x,location.y].accesible = false;
             
         }else{
             Debug.Log("IA: " + "Imposible construir");
+            FinalizarTurno();
         }
     }
 
