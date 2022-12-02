@@ -11,9 +11,6 @@ public class IAManager : MonoBehaviour
     public GameMaster GMS;
     public int id = 2;
 
-    public ActionTypes currentAction;
-    public StrategyTypes currentStrategy;
-
     const int MANA_MAX = 15;
 
     private Grid grid;
@@ -25,11 +22,11 @@ public class IAManager : MonoBehaviour
     private bool strategyDecided = false;
     private Strategy strategy;
 
+    private bool working = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        currentAction = ActionTypes.NONE;
-        currentStrategy = StrategyTypes.GROW;
         grid = GameObject.Find("Pathfinding").GetComponent<Grid>();
         createTownHall();
     }
@@ -39,40 +36,40 @@ public class IAManager : MonoBehaviour
     {
         if (isMyTurn()){
             if (!strategyDecided){
-                DecideStrategy();
-            }
-            Debug.Log("Turno id: " + id);
-            if (strategy.isActionAvailable(mana,coins)){
-                StartCoroutine("doAction");
-            }
-            else
-            {
-                FinalizarTurno();
-            }
+                StartCoroutine("DecideStrategy");
+            }else{
+                if (!working && strategyDecided && strategy.isActionAvailable(mana,coins)){
+                    StartCoroutine("doAction");
+                }
+                else
+                {
+                    FinalizarTurno();
+                }
+            }  
         }
     }
 
-    void DecideStrategy(){
+    IEnumerator DecideStrategy(){
+        yield return new WaitForSeconds(2.0f);
         int collectors = getNum("Collector");
         int towers = getNum("Tower");
         int barracks = getNum("Barracks");
         int units = getNum("Unit");
         strategy = StrategyManager.getStrategy(collectors,towers,barracks,units, false, false);
         strategyDecided = true;
-        Debug.Log("IA Strategy " + strategy);
     }
 
-    private void FinalizarTurno()
-    {
-        GMS.finalizarTurno();
-        Debug.Log("Fin Turno id: " + id);
+    void FinalizarTurno()
+    { 
         UpdateResourcesNextTurn();
         strategyDecided = false;
+        working = false;
+        GMS.finalizarTurno();
     }
 
     void UpdateResourcesNextTurn(){
         turnos++;
-        incMana(turnos);
+        SetMana(turnos);
 
         foreach (Transform child in transform)
         {
@@ -83,6 +80,7 @@ public class IAManager : MonoBehaviour
     }
 
     IEnumerator doAction(){
+        working = true;
         Action action = strategy.getAction(mana,coins);
 
         Debug.Log("doAction: " + action);
@@ -98,12 +96,16 @@ public class IAManager : MonoBehaviour
             case ActionTypes.BUILD_BARRACKS:
                 createBuildingAction(action);
                 break;
+            case ActionTypes.CREATE_UNIT:
+                createUnitAction(action);
+                break;
             default:
                 Debug.Log("Nada que hacer" + " Mana: " + mana + " Coins: " + coins);
-                FinalizarTurno();
+                //FinalizarTurno();
                 break;
         }
         yield return new WaitForSeconds(2.0f);
+        working = false;
     }
 
     private bool isMyTurn(){
@@ -112,6 +114,13 @@ public class IAManager : MonoBehaviour
         }
         else{
             return false;
+        }
+    }
+
+    public void SetMana(int value){
+        mana = value;
+        if (mana > MANA_MAX){
+            mana = MANA_MAX;
         }
     }
 
@@ -143,6 +152,10 @@ public class IAManager : MonoBehaviour
 
     public int getCoins(){
         return coins;
+    }
+
+    public Strategy getStrategy(){
+        return strategy;
     }
 
     public void moveUnitAction(){
@@ -183,7 +196,29 @@ public class IAManager : MonoBehaviour
             
         }else{
             Debug.Log("IA: " + "Imposible construir");
-            FinalizarTurno();
+            //FinalizarTurno();
+        }
+    }
+
+    public void createUnitAction(Action action){
+        Debug.Log("IA Create Unit");
+
+        string resource = "Prefabs/Warrior";
+
+        Vector2Int location = getSlotNearTownHall();
+
+        if (isValidLocation(location)){
+            GameObject unit = Instantiate(Resources.Load(resource), grid.GetGlobalPosition(location.x,location.y), Quaternion.identity) as GameObject;
+            unit.transform.parent = transform;
+            unit.GetComponent<Unidad>().numJugador = id;
+            unit.GetComponent<Unidad>().Location = location;
+            decMana(ActionManager.getActionSpecifications(action.getType()).getManaCost());
+            decCoins(ActionManager.getActionSpecifications(action.getType()).getCoinCost());
+            grid.grid[location.x,location.y].accesible = false;
+            
+        }else{
+            Debug.Log("IA: " + "Imposible construir");
+            //FinalizarTurno();
         }
     }
 
