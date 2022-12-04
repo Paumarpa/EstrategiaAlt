@@ -1731,7 +1731,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &558061618
 Transform:
   m_ObjectHideFlags: 0
@@ -4298,6 +4298,54 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eec45b19ef05229499c1a0661b0ac9a1, type: 3}
+--- !u!1 &1376672486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1376672488}
+  - component: {fileID: 1376672487}
+  m_Layer: 0
+  m_Name: Mapa
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1376672487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376672486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60de4ba768446034f86f2100e60f41f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ancho: 13
+  alto: 7
+  casillaPrefab: {fileID: 4877499236603683513, guid: eec45b19ef05229499c1a0661b0ac9a1, type: 3}
+  obstaculoPrefab: {fileID: 4195769969815067655, guid: 89ba57aea66811e4fa8e72fe36e37245, type: 3}
+--- !u!4 &1376672488
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376672486}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.19276181, y: 0.61775464, z: -8.509008}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1381834136 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5967476643840566546, guid: eec45b19ef05229499c1a0661b0ac9a1, type: 3}
@@ -6148,6 +6196,8 @@ MonoBehaviour:
   inaccesible:
     serializedVersion: 2
     m_Bits: 64
+  ladoGridX: 0
+  ladoGridY: 0
 --- !u!4 &2083054091
 Transform:
   m_ObjectHideFlags: 0
