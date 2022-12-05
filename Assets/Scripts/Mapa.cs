@@ -41,7 +41,7 @@ public class Mapa : MonoBehaviour
 
     public void GetCasillasVisibles(Casilla casilla,int vision)
     {
-        List<Casilla> visibles = new List<Casilla>();
+        
         if( vision == 0 )
             return ;
 
@@ -56,11 +56,14 @@ public class Mapa : MonoBehaviour
                 else
                     { 
                     Casilla newCasilla = encontrarCasillaPos(new Vector2(casilla.mapaX+x, casilla.mapaY + y));
-
+                    if(newCasilla ==null)
+                    {
+                        continue;
+                    }
                     int verX = newCasilla.mapaX ;
                     int verY = newCasilla.mapaY ;
 
-                    if (verX >= -ancho/2 && verX < (float)ancho / 2 + 0.5 && verY >= -alto/2 && verY < (float)alto / 2 + 0.5 && newCasilla.esAccesible())
+                    if ( newCasilla.esAccesible())
                     {
                         newCasilla.highLight();
 
