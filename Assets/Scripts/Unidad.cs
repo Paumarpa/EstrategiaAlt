@@ -87,6 +87,7 @@ public class Unidad : MonoBehaviour
 
     void Atacar(Unidad enemigo)
     {
+        Debug.Log("atacando");
         haAtacado = true;
 
         int dano = danoAtaque - enemigo.armadura;
@@ -130,7 +131,7 @@ public class Unidad : MonoBehaviour
         Vector2 pos = new Vector2(transform.position.x,transform.position.y);
         Casilla actual = mapa.encontrarCasillaPos(pos);
         mapa.GetCasillasVisibles(actual, velocidad);
-        seHaMovido = true;
+        
     }
 
     void GetEnemigos()
@@ -191,6 +192,7 @@ public class Unidad : MonoBehaviour
                 {
                     ResetIconosArmas();
                     GetEnemigos();
+                    seHaMovido = true;
                     yield break;
                 }
                 currentWaypoint = camino[indiceObj];
