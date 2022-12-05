@@ -130,6 +130,7 @@ public class Unidad : MonoBehaviour
         Vector2 pos = new Vector2(transform.position.x,transform.position.y);
         Casilla actual = mapa.encontrarCasillaPos(pos);
         mapa.GetCasillasVisibles(actual, velocidad);
+        seHaMovido = true;
     }
 
     void GetEnemigos()
