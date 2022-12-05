@@ -13,8 +13,12 @@ public class Casilla : MonoBehaviour
     public Color colorHighlight;
 
     public bool accesible;
-
+    public int mapaX;
+    public int mapaY;
     GameMaster gm;
+
+
+    
     void Start()
     {
         rend = GetComponent<SpriteRenderer>();
