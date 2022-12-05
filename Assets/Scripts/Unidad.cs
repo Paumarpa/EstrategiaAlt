@@ -36,10 +36,13 @@ public class Unidad : MonoBehaviour
     public Vector2Int Location;
 
     private Casilla[] casillas;
+
+    private Mapa mapa;
     private void Start()
     {
         gm = FindObjectOfType<GameMaster>();
         casillas = FindObjectsOfType<Casilla>();
+        mapa = FindObjectOfType<Mapa>();
 
     }
 
@@ -124,18 +127,9 @@ public class Unidad : MonoBehaviour
             return;
         }
 
-        
-        foreach (Casilla casilla in casillas)
-        {
-            //ahora en valor absoluto, falta a*
-            if (Mathf.Abs(transform.position.x - casilla.transform.position.x) + Mathf.Abs(transform.position.y - casilla.transform.position.y) <= velocidad)
-            {
-                if (casilla.esAccesible() == true)
-                {
-                    casilla.highLight();
-                }
-            }
-        }
+        Vector2 pos = new Vector2(transform.position.x,transform.position.y);
+        Casilla actual = mapa.encontrarCasillaPos(pos);
+        mapa.GetCasillasVisibles(actual, velocidad);
     }
 
     void GetEnemigos()
@@ -170,22 +164,7 @@ public class Unidad : MonoBehaviour
         //StartCoroutine(EMover(objetivo));
     }
 
-    //no por camino optimo, movimiento linear
-    IEnumerator EMover(Vector2 pos)
-    {
-        while (transform.position.x != pos.x ){
-            transform.position = Vector2.MoveTowards(transform.position, new Vector2(pos.x, transform.position.y), velocidad * Time.deltaTime);
-            yield return null;
-        }
-        while (transform.position.y != pos.y)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x, pos.y), velocidad * Time.deltaTime);
-            yield return null;
-        }
-        seHaMovido = true;
-        ResetIconosArmas();
-        GetEnemigos();
-    }
+   
 
     private void OnCaminEnc(Vector3[] newCamino, bool exito)
     {
