@@ -26,16 +26,32 @@ public static class StrategyManager{
         defenseActions.Add(ActionManager.actions[(int)ActionTypes.ATTACK_UNIT]);
         defenseActions.Add(ActionManager.actions[(int)ActionTypes.CREATE_UNIT]);
         defenseActions.Add(ActionManager.actions[(int)ActionTypes.BUILD_TOWER]);
-        strategies.Add(new Strategy(StrategyTypes.ATTACK,defenseActions));
+        strategies.Add(new Strategy(StrategyTypes.DEFENSE,defenseActions));
 
         List<Action> exploreActions = new List<Action>();
         exploreActions.Add(ActionManager.actions[(int)ActionTypes.MOVE_UNIT]);
         exploreActions.Add(ActionManager.actions[(int)ActionTypes.CREATE_UNIT]);
-        strategies.Add(new Strategy(StrategyTypes.ATTACK,exploreActions));
+        strategies.Add(new Strategy(StrategyTypes.EXPLORE,exploreActions));
 
     }
 
-    public static Strategy getStrategy(){ //TODO como se decide la estrategia
-        return strategies[0];
+    public static Strategy getStrategy(int collectors, int towers, int barracks, int units, bool enemyDiscovered, bool townhallDiscovered){ //TODO como se decide la estrategia
+        if (townhallDiscovered){
+            if (units < 5){
+                return strategies[(int)StrategyTypes.GROW];
+            }else{
+                return strategies[(int)StrategyTypes.ATTACK];
+            }
+        }else{
+            if (enemyDiscovered){
+                return strategies[(int)StrategyTypes.DEFENSE];
+            }else{
+                if (units < 5 ){
+                    return strategies[(int)StrategyTypes.GROW];
+                }else{
+                    return strategies[(int)StrategyTypes.EXPLORE];
+                }
+            }
+        }
     }
 }

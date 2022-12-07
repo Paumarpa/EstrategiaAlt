@@ -21,4 +21,9 @@ public class Action
     public int getCoinCost(){
         return coinCost;
     }
+
+    public override string ToString()
+    {
+        return "Action: " + type + " Mana: " + manaCost + " Coins: " + coinCost;
+    }
 }

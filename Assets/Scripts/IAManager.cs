@@ -11,20 +11,22 @@ public class IAManager : MonoBehaviour
     public GameMaster GMS;
     public int id = 2;
 
-    public ActionTypes currentAction;
-    public StrategyTypes currentStrategy;
-
     const int MANA_MAX = 15;
 
     private Grid grid;
 
     private Vector2Int townHallLocation;
 
+    public const int COINS_BY_COLLECTOR =  50;
+
+    private bool strategyDecided = false;
+    private Strategy strategy;
+
+    private bool working = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        currentAction = ActionTypes.NONE;
-        currentStrategy = StrategyTypes.GROW;
         grid = GameObject.Find("Pathfinding").GetComponent<Grid>();
         createTownHall();
     }
@@ -33,41 +35,77 @@ public class IAManager : MonoBehaviour
     void FixedUpdate()
     {
         if (isMyTurn()){
-            if (ActionManager.isActionAvailable(mana,coins)){
-                StartCoroutine("doAction");
-            }
-            else{
-                GMS.finalizarTurno();
-                UpdateResourcesNextTurn();
-            }
+            if (!strategyDecided){
+                StartCoroutine("DecideStrategy");
+            }else{
+                if (!working && strategyDecided && strategy.isActionAvailable(mana,coins)){
+                    StartCoroutine("doAction");
+                }
+                else
+                {
+                    FinalizarTurno();
+                }
+            }  
         }
+    }
+
+    IEnumerator DecideStrategy(){
+        yield return new WaitForSeconds(2.0f);
+        int collectors = getNum("Collector");
+        int towers = getNum("Tower");
+        int barracks = getNum("Barracks");
+        int units = getNum("Unit");
+        strategy = StrategyManager.getStrategy(collectors,towers,barracks,units, false, false);
+        strategyDecided = true;
+    }
+
+    void FinalizarTurno()
+    { 
+        UpdateResourcesNextTurn();
+        strategyDecided = false;
+        working = false;
+        GMS.finalizarTurno();
     }
 
     void UpdateResourcesNextTurn(){
         turnos++;
-        incMana(turnos);
+        SetMana(turnos);
 
         foreach (Transform child in transform)
         {
             if (child.gameObject.tag == "Collector"){
-                incCoins(200);
+                incCoins(COINS_BY_COLLECTOR);
             }
         }
     }
 
     IEnumerator doAction(){
-        Action action = ActionManager.getAction(mana,coins);
+        working = true;
+        Action action = strategy.getAction(mana,coins);
+
+        Debug.Log("doAction: " + action);
 
         switch (action.getType())
         {
             case ActionTypes.BUILD_COLLECTOR:
-                createCollectorAction();
+                createBuildingAction(action);
+                break;
+            case ActionTypes.BUILD_TOWER:
+                createBuildingAction(action);
+                break;
+            case ActionTypes.BUILD_BARRACKS:
+                createBuildingAction(action);
+                break;
+            case ActionTypes.CREATE_UNIT:
+                createUnitAction(action);
                 break;
             default:
                 Debug.Log("Nada que hacer" + " Mana: " + mana + " Coins: " + coins);
-            break;
+                //FinalizarTurno();
+                break;
         }
         yield return new WaitForSeconds(2.0f);
+        working = false;
     }
 
     private bool isMyTurn(){
@@ -76,6 +114,13 @@ public class IAManager : MonoBehaviour
         }
         else{
             return false;
+        }
+    }
+
+    public void SetMana(int value){
+        mana = value;
+        if (mana > MANA_MAX){
+            mana = MANA_MAX;
         }
     }
 
@@ -88,7 +133,6 @@ public class IAManager : MonoBehaviour
 
     public void decMana(int value = 1){
         mana -= value;
-        Debug.Log("IA: " + "Gastando Maná: " + value);
         if (mana < 0){
             mana = 0;
         }
@@ -110,26 +154,71 @@ public class IAManager : MonoBehaviour
         return coins;
     }
 
+    public Strategy getStrategy(){
+        return strategy;
+    }
+
     public void moveUnitAction(){
         Debug.Log("IA: " + "Move Unit Action");
         decMana();
     }
 
-    public void createCollectorAction(){
-        Debug.Log("IA: " + "Create Collector Action");
-        //Vector2Int location = new Vector2Int(Random.Range(0,grid.ladoGridX-1), 0 );
+    public void createBuildingAction(Action action){
+        Debug.Log("IA Create Building: " + action);
+
+        string resource;
+
+        switch (action.getType())
+        {
+            case ActionTypes.BUILD_COLLECTOR:
+                resource = "Prefabs/Collector";
+                break;
+            case ActionTypes.BUILD_TOWER:
+                resource = "Prefabs/Tower";
+                break;
+            case ActionTypes.BUILD_BARRACKS:
+                resource = "Prefabs/Barracks";
+                break;
+            default:
+                return;
+        }
 
         Vector2Int location = getSlotNearTownHall();
 
         if (isValidLocation(location)){
-            GameObject collector = Instantiate(Resources.Load("Prefabs/Collector"), grid.GetGlobalPosition(location.x,location.y), Quaternion.identity) as GameObject;
-            collector.transform.parent = transform;
-            collector.GetComponent<Unidad>().numJugador = id;
-            collector.GetComponent<Unidad>().Location = location;
-            decMana(ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getManaCost());
-            decCoins(ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getCoinCost());
+            GameObject building = Instantiate(Resources.Load(resource), grid.GetGlobalPosition(location.x,location.y), Quaternion.identity) as GameObject;
+            building.transform.parent = transform;
+            building.GetComponent<Unidad>().numJugador = id;
+            building.GetComponent<Unidad>().Location = location;
+            decMana(ActionManager.getActionSpecifications(action.getType()).getManaCost());
+            decCoins(ActionManager.getActionSpecifications(action.getType()).getCoinCost());
+            grid.grid[location.x,location.y].accesible = false;
+            
         }else{
             Debug.Log("IA: " + "Imposible construir");
+            //FinalizarTurno();
+        }
+    }
+
+    public void createUnitAction(Action action){
+        Debug.Log("IA Create Unit");
+
+        string resource = "Prefabs/Warrior";
+
+        Vector2Int location = getSlotNearTownHall();
+
+        if (isValidLocation(location)){
+            GameObject unit = Instantiate(Resources.Load(resource), grid.GetGlobalPosition(location.x,location.y), Quaternion.identity) as GameObject;
+            unit.transform.parent = transform;
+            unit.GetComponent<Unidad>().numJugador = id;
+            unit.GetComponent<Unidad>().Location = location;
+            decMana(ActionManager.getActionSpecifications(action.getType()).getManaCost());
+            decCoins(ActionManager.getActionSpecifications(action.getType()).getCoinCost());
+            grid.grid[location.x,location.y].accesible = false;
+            
+        }else{
+            Debug.Log("IA: " + "Imposible construir");
+            //FinalizarTurno();
         }
     }
 
@@ -148,6 +237,8 @@ public class IAManager : MonoBehaviour
         townhall.GetComponent<Unidad>().Location = location;
         townhall.transform.parent = transform;
         townHallLocation = location;
+
+        grid.grid[location.x,location.y].accesible = false;
         //cleanTownHallUbication(TH1);
         //cleanTownHallUbication(TH2);
     }
@@ -187,4 +278,19 @@ public class IAManager : MonoBehaviour
 
         return isValidLocation(x,y);
     }
+
+    int getNum(string type){
+
+        int resultado = 0;
+
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.tag == "Collector"){
+                resultado++;
+            }
+        }
+
+        return resultado;
+    }
+
 }
