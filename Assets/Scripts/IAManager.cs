@@ -38,7 +38,7 @@ public class IAManager : MonoBehaviour
             if (!strategyDecided){
                 StartCoroutine("DecideStrategy");
             }else{
-                if (!working && strategyDecided && strategy.isActionAvailable(mana,coins)){
+                if (!working && strategyDecided && strategy.isActionAvailable()){
                     StartCoroutine("doAction");
                 }
                 else
@@ -56,6 +56,7 @@ public class IAManager : MonoBehaviour
         int barracks = getNum("Barracks");
         int units = getNum("Unit");
         strategy = StrategyManager.getStrategy(collectors,towers,barracks,units, false, false);
+        strategy.planActions(mana,coins,this);
         strategyDecided = true;
     }
 
@@ -81,7 +82,7 @@ public class IAManager : MonoBehaviour
 
     IEnumerator doAction(){
         working = true;
-        Action action = strategy.getAction(mana,coins);
+        Action action = strategy.getNextAction();
 
         Debug.Log("doAction: " + action);
 
@@ -279,7 +280,7 @@ public class IAManager : MonoBehaviour
         return isValidLocation(x,y);
     }
 
-    int getNum(string type){
+    public int getNum(string type){
 
         int resultado = 0;
 
