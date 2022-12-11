@@ -197,6 +197,7 @@ public class Strategy
                 plannedActions.Add(ActionManager.actions[(int)ActionTypes.MOVE_UNIT]);
                 mana -= ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getManaCost();
                 coin -= ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getCoinCost();
+                units -= 1;
             }else if (ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT)){
                 plannedActions.Add(ActionManager.actions[(int)ActionTypes.CREATE_UNIT]);
                 mana -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getManaCost();
