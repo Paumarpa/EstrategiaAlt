@@ -20,6 +20,7 @@ public class IAManager : MonoBehaviour
     public const int COINS_BY_COLLECTOR =  50;
 
     private bool strategyDecided = false;
+    private bool townHallCreated = false;
     public Strategy strategy;
 
     // Start is called before the first frame update
@@ -109,7 +110,7 @@ public class IAManager : MonoBehaviour
     }
 
     private bool isMyTurn(){
-        if (GMS.isCurrentTeamIA(id)){
+        if (GMS.isCurrentTeamIA(id) && townHallCreated){
             return true;
         }
         else{
@@ -238,6 +239,8 @@ public class IAManager : MonoBehaviour
         townHallLocation = location;
 
         grid.grid[location.x,location.y].accesible = false;
+
+        townHallCreated = true;
         //cleanTownHallUbication(TH1);
         //cleanTownHallUbication(TH2);
     }
