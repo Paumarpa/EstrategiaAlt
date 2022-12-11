@@ -9,6 +9,8 @@ public class Grid : MonoBehaviour {
     public float radioNodo;
     public LayerMask inaccesible;
 
+    public bool gridCreated = false;
+
     public Nodo[,] grid;
 
     float diametroNodo;
@@ -44,6 +46,8 @@ public class Grid : MonoBehaviour {
 
             }
         }
+
+        gridCreated = true;
 
     }
 

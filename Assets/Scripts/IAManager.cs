@@ -26,7 +26,7 @@ public class IAManager : MonoBehaviour
     void Start()
     {
         grid = GameObject.Find("Pathfinding").GetComponent<Grid>();
-        createTownHall();
+        StartCoroutine("createTownHall");
     }
 
     void FixedUpdate()
@@ -217,9 +217,13 @@ public class IAManager : MonoBehaviour
         }
     }
 
-    public void createTownHall()
+    IEnumerator createTownHall()
     {
         Vector2Int location;
+
+        while (!grid.gridCreated){
+            yield return new WaitForSeconds(0.1f);
+        }
 
         if (id == 1){
             location = new Vector2Int(Random.Range(0,grid.ladoGridX-1), 0 ); 
