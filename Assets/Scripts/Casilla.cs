@@ -67,7 +67,7 @@ public class Casilla : MonoBehaviour
         rend.color = Color.white;
         accesible = false;
     }
-    private void OnMouseDown()
+    public void OnMouseDown()
     {
         if (accesible && gm.unidadSeleccionada != null)
         {

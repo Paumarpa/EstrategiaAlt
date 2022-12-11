@@ -39,11 +39,12 @@ public class Mapa : MonoBehaviour
     }
 
 
-    public void GetCasillasVisibles(Casilla casilla,int vision)
+    public List<Casilla> GetCasillasVisibles(Casilla casilla,int vision)
     {
+        List<Casilla> result = new List<Casilla>();
         
         if( vision == 0 )
-            return ;
+            return result;
 
         for (int x = -1; x <= 1; x++)
         {
@@ -66,14 +67,17 @@ public class Mapa : MonoBehaviour
                     if ( newCasilla.esAccesible())
                     {
                         newCasilla.highLight();
+                        result.Add(newCasilla);
 
-                        GetCasillasVisibles(newCasilla, vision - 1);
+                        result.AddRange(GetCasillasVisibles(newCasilla, vision - 1));
                     }
 
                 }
                 
             }
         }
+
+        return result;
         
     }
 

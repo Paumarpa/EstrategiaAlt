@@ -12,6 +12,7 @@ public class IAManager : MonoBehaviour
     public int id = 2;
 
     const int MANA_MAX = 15;
+    const float SIMULATION_STEP = 0.15f;
 
     private Grid grid;
 
@@ -96,12 +97,15 @@ public class IAManager : MonoBehaviour
                 case ActionTypes.CREATE_UNIT:
                     createUnitAction(action);
                     break;
+                case ActionTypes.MOVE_UNIT:
+                    moveUnitAction(action);
+                    break;
                 default:
                     Debug.Log("Nada que hacer" + " Mana: " + mana + " Coins: " + coins);
                     break;
             }
 
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(SIMULATION_STEP);
         }
 
         if (!strategy.isActionAvailable()){
@@ -159,8 +163,9 @@ public class IAManager : MonoBehaviour
         return strategy;
     }
 
-    public void moveUnitAction(){
-        decMana();
+    public void moveUnitAction(Action action){
+        action.gameObject.GetComponent<Unidad>().OnMouseDownIA();
+        action.gameObject.GetComponent<Unidad>().MoverIA();
     }
 
     public void createBuildingAction(Action action){
@@ -293,6 +298,18 @@ public class IAManager : MonoBehaviour
         }
 
         return resultado;
+    }
+
+    public List<GameObject> getGameObjects(string type){
+        List<GameObject> result = new List<GameObject>();
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.tag == type){
+                result.Add(child.gameObject);
+            }
+        }
+
+        return result;
     }
 
 }

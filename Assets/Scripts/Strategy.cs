@@ -191,13 +191,18 @@ public class Strategy
         int towers = IA.getNum("Tower");
         int barracks = IA.getNum("Barracks");
         int units = IA.getNum("Unit");
+        List<GameObject> unitsList = IA.getGameObjects("Unit");
+        int index = 0;
 
         while(ActionManager.isActionAvailable(mana,coin)){
             if (units > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT)){
-                plannedActions.Add(ActionManager.actions[(int)ActionTypes.MOVE_UNIT]);
+                Action action = new Action(ActionManager.actions[(int)ActionTypes.MOVE_UNIT]);
+                action.gameObject = unitsList[index];
+                plannedActions.Add(action);
                 mana -= ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getManaCost();
                 coin -= ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getCoinCost();
                 units -= 1;
+                index += 1;
             }else if (ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT)){
                 plannedActions.Add(ActionManager.actions[(int)ActionTypes.CREATE_UNIT]);
                 mana -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getManaCost();

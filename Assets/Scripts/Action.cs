@@ -1,14 +1,25 @@
+using UnityEngine;
 public class Action
 {
     private ActionTypes type;
     private int manaCost;
     private int coinCost;
 
-    public Action(ActionTypes type, int mana, int coin){
+    public GameObject gameObject;
+
+    public Action(ActionTypes type, int mana, int coin, GameObject gameObject = null){
         this.type = type;
         this.manaCost = mana;
         this.coinCost = coin;
+        this.gameObject = gameObject;
     }
+
+    public Action(Action other){
+        this.type = other.type;
+        this.manaCost = other.manaCost;
+        this.coinCost = other.coinCost;
+        this.gameObject = other.gameObject;
+    }    
 
     public ActionTypes getType(){
         return type;

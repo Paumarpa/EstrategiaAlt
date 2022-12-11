@@ -46,7 +46,7 @@ public class Unidad : MonoBehaviour
 
     }
 
-    private void OnMouseDown()
+    public void OnMouseDown()
     {
         ResetIconosArmas();
         if(seleccionado == true)
@@ -82,6 +82,35 @@ public class Unidad : MonoBehaviour
             {
                 gm.unidadSeleccionada.Atacar(unidad);
             }
+        }
+    }
+
+    public void OnMouseDownIA()
+    {
+        ResetIconosArmas();
+        if(seleccionado == true)
+        {
+            seleccionado = false;
+            gm.unidadSeleccionada = null;
+            gm.resetCasillas();
+        }
+        else
+        {
+            if (numJugador == gm.turno)
+            {
+                if(gm.unidadSeleccionada != null)
+                {
+                    gm.unidadSeleccionada.seleccionado = false;
+                }
+                gm.resetCasillas();
+                  gm.unidadSeleccionada = this;
+                seleccionado = true;
+                
+                GetWalkableTiles();
+                GetEnemigos();
+        
+            }
+            
         }
     }
 
@@ -164,6 +193,15 @@ public class Unidad : MonoBehaviour
         ispathfinding = true;
         encontrarCamino.pedirCamino(transform.position, objetivo, OnCaminEnc);
         //StartCoroutine(EMover(objetivo));
+    }
+
+    public void MoverIA(){
+        Vector2 pos = new Vector2(transform.position.x,transform.position.y);
+        Casilla actual = mapa.encontrarCasillaPos(pos);
+        List<Casilla> casillas = mapa.GetCasillasVisibles(actual, velocidad);
+        if (casillas.Count > 0){
+            casillas[Random.Range(0,casillas.Count)].OnMouseDown();
+        }
     }
 
    
