@@ -12,7 +12,7 @@ public class Mapa : MonoBehaviour
 
     private Dictionary<Vector2, Casilla> casillas;
 
-    void Start()
+    void Awake()
     {
         generaMapa();
     }

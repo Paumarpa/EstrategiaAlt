@@ -15,7 +15,7 @@ public class Grid : MonoBehaviour {
     public int ladoGridX, ladoGridY;
 
     
-    void Awake()
+    void Start()
     {
         diametroNodo = radioNodo * 2;
         ladoGridX = Mathf.RoundToInt(tamañoGrid.x / diametroNodo);
