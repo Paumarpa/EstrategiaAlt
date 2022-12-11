@@ -48,10 +48,10 @@ public static class ActionManager{
     }
 
     public static bool isActionAvailable(int manaAvailable, int coinAvailable, ActionTypes type){
-        int mana = getActionSpecifications(type).getManaCost();
-        int coins = getActionSpecifications(type).getCoinCost();
+        int manaCost = getActionSpecifications(type).getManaCost();
+        int coinsCost = getActionSpecifications(type).getCoinCost();
 
-        if (manaAvailable <= mana && coins <= coinAvailable){
+        if (manaCost <= manaAvailable && coinsCost <= coinAvailable){
             return true;
         }else{
             return false;

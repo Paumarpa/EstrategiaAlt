@@ -20,9 +20,7 @@ public class IAManager : MonoBehaviour
     public const int COINS_BY_COLLECTOR =  50;
 
     private bool strategyDecided = false;
-    private Strategy strategy;
-
-    private bool working = false;
+    public Strategy strategy;
 
     // Start is called before the first frame update
     void Start()
@@ -31,26 +29,23 @@ public class IAManager : MonoBehaviour
         createTownHall();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (isMyTurn()){
             if (!strategyDecided){
-                StartCoroutine("DecideStrategy");
-            }else{
-                if (!working && strategyDecided && strategy.isActionAvailable()){
+                //StartCoroutine("DecideStrategy");
+                DecideStrategy();
+                if (strategy.isActionAvailable()){
                     StartCoroutine("doAction");
                 }
-                else
-                {
+                else{
                     FinalizarTurno();
                 }
-            }  
+            }
         }
     }
 
-    IEnumerator DecideStrategy(){
-        yield return new WaitForSeconds(2.0f);
+    void DecideStrategy(){
         int collectors = getNum("Collector");
         int towers = getNum("Tower");
         int barracks = getNum("Barracks");
@@ -62,10 +57,10 @@ public class IAManager : MonoBehaviour
 
     void FinalizarTurno()
     { 
+        StopCoroutine("doAction");
         UpdateResourcesNextTurn();
-        strategyDecided = false;
-        working = false;
         GMS.finalizarTurno();
+        strategyDecided = false;
     }
 
     void UpdateResourcesNextTurn(){
@@ -81,32 +76,36 @@ public class IAManager : MonoBehaviour
     }
 
     IEnumerator doAction(){
-        working = true;
-        Action action = strategy.getNextAction();
+        
+        while (strategy.isActionAvailable()){
+            Action action = strategy.getNextAction();
+            Debug.Log("doAction: " + action);
 
-        Debug.Log("doAction: " + action);
+            switch (action.getType())
+            {
+                case ActionTypes.BUILD_COLLECTOR:
+                    createBuildingAction(action);
+                    break;
+                case ActionTypes.BUILD_TOWER:
+                    createBuildingAction(action);
+                    break;
+                case ActionTypes.BUILD_BARRACKS:
+                    createBuildingAction(action);
+                    break;
+                case ActionTypes.CREATE_UNIT:
+                    createUnitAction(action);
+                    break;
+                default:
+                    Debug.Log("Nada que hacer" + " Mana: " + mana + " Coins: " + coins);
+                    break;
+            }
 
-        switch (action.getType())
-        {
-            case ActionTypes.BUILD_COLLECTOR:
-                createBuildingAction(action);
-                break;
-            case ActionTypes.BUILD_TOWER:
-                createBuildingAction(action);
-                break;
-            case ActionTypes.BUILD_BARRACKS:
-                createBuildingAction(action);
-                break;
-            case ActionTypes.CREATE_UNIT:
-                createUnitAction(action);
-                break;
-            default:
-                Debug.Log("Nada que hacer" + " Mana: " + mana + " Coins: " + coins);
-                //FinalizarTurno();
-                break;
+            yield return new WaitForSeconds(.5f);
         }
-        yield return new WaitForSeconds(2.0f);
-        working = false;
+
+        if (!strategy.isActionAvailable()){
+            FinalizarTurno();
+        }
     }
 
     private bool isMyTurn(){
@@ -160,12 +159,10 @@ public class IAManager : MonoBehaviour
     }
 
     public void moveUnitAction(){
-        Debug.Log("IA: " + "Move Unit Action");
         decMana();
     }
 
     public void createBuildingAction(Action action){
-        Debug.Log("IA Create Building: " + action);
 
         string resource;
 
@@ -197,12 +194,10 @@ public class IAManager : MonoBehaviour
             
         }else{
             Debug.Log("IA: " + "Imposible construir");
-            //FinalizarTurno();
         }
     }
 
     public void createUnitAction(Action action){
-        Debug.Log("IA Create Unit");
 
         string resource = "Prefabs/Warrior";
 
@@ -218,8 +213,7 @@ public class IAManager : MonoBehaviour
             grid.grid[location.x,location.y].accesible = false;
             
         }else{
-            Debug.Log("IA: " + "Imposible construir");
-            //FinalizarTurno();
+            Debug.Log("IA: " + "Imposible construir unidad");
         }
     }
 
@@ -286,7 +280,7 @@ public class IAManager : MonoBehaviour
 
         foreach (Transform child in transform)
         {
-            if (child.gameObject.tag == "Collector"){
+            if (child.gameObject.tag == type){
                 resultado++;
             }
         }
