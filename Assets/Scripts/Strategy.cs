@@ -193,22 +193,14 @@ public class Strategy
         int units = IA.getNum("Unit");
 
         while(ActionManager.isActionAvailable(mana,coin)){
-            if (barracks < 2 && ActionManager.isActionAvailable(mana,coin,ActionTypes.BUILD_BARRACKS)){
-                plannedActions.Add(ActionManager.actions[(int)ActionTypes.BUILD_BARRACKS]);
-                mana -= ActionManager.getActionSpecifications(ActionTypes.BUILD_BARRACKS).getManaCost();
-                coin -= ActionManager.getActionSpecifications(ActionTypes.BUILD_BARRACKS).getCoinCost();
-            }else if (towers < (units + 1) / 2 && ActionManager.isActionAvailable(mana,coin,ActionTypes.BUILD_TOWER)){
-                plannedActions.Add(ActionManager.actions[(int)ActionTypes.BUILD_TOWER]);
-                mana -= ActionManager.getActionSpecifications(ActionTypes.BUILD_TOWER).getManaCost();
-                coin -= ActionManager.getActionSpecifications(ActionTypes.BUILD_TOWER).getCoinCost();
-            }else if (collectors > (units + 1) /2 && ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT)){
+            if (units > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT)){
+                plannedActions.Add(ActionManager.actions[(int)ActionTypes.MOVE_UNIT]);
+                mana -= ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getManaCost();
+                coin -= ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getCoinCost();
+            }else if (ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT)){
                 plannedActions.Add(ActionManager.actions[(int)ActionTypes.CREATE_UNIT]);
                 mana -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getManaCost();
                 coin -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getCoinCost();
-            }else if (ActionManager.isActionAvailable(mana,coin,ActionTypes.BUILD_COLLECTOR)){
-                plannedActions.Add(ActionManager.actions[(int)ActionTypes.BUILD_COLLECTOR]);
-                mana -= ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getManaCost();
-                coin -= ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getCoinCost();
             }else{
                 break;
             }
