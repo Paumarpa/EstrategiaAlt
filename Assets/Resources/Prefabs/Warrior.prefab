@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2529332519181101705}
   m_Layer: 6
   m_Name: Warrior
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,8 +107,9 @@ MonoBehaviour:
   haAtacado: 0
   armaIcono: {fileID: 6692405927313590402}
   vida: 5
-  "da\xF1oAtaque": 3
+  danoAtaque: 0
   armadura: 1
+  Location: {x: 0, y: 0}
 --- !u!61 &2529332519181101705
 BoxCollider2D:
   m_ObjectHideFlags: 0

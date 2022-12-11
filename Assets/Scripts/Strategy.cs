@@ -93,7 +93,7 @@ public class Strategy
                 plannedActions.Add(ActionManager.actions[(int)ActionTypes.BUILD_TOWER]);
                 mana -= ActionManager.getActionSpecifications(ActionTypes.BUILD_TOWER).getManaCost();
                 coin -= ActionManager.getActionSpecifications(ActionTypes.BUILD_TOWER).getCoinCost();
-            }else if (collectors > (units + 1) /2 && ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT)){
+            }else if (collectors > (units + 1) /3 && ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT)){
                 plannedActions.Add(ActionManager.actions[(int)ActionTypes.CREATE_UNIT]);
                 mana -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getManaCost();
                 coin -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getCoinCost();
