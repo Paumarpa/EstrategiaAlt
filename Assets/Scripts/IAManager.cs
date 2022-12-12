@@ -170,14 +170,14 @@ public class IAManager : MonoBehaviour
     public void moveUnitAction(Action action){
         Unidad unidad = action.gameObject.GetComponent<Unidad>();
         unidad.OnMouseDownIA();
-        unidad.MoverIA();
+        unidad.MoveToExploreIA(townHallLocation);
         working = true;
         StartCoroutine(WaitForFinishMovement(unidad));
     }
 
     IEnumerator WaitForFinishMovement(Unidad unidad){
         while(unidad.ispathfinding){
-            yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(0.25f);
         }
         working = false;
         yield return null;

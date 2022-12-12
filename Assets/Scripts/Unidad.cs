@@ -195,12 +195,22 @@ public class Unidad : MonoBehaviour
         //StartCoroutine(EMover(objetivo));
     }
 
-    public void MoverIA(){
+    public void MoveToExploreIA(Vector2Int townHallLocation){
         Vector2 pos = new Vector2(transform.position.x,transform.position.y);
         Casilla actual = mapa.encontrarCasillaPos(pos);
         List<Casilla> casillas = mapa.GetCasillasVisibles(actual, velocidad);
+        float maxDistance;
         if (casillas.Count > 0){
-            casillas[Random.Range(0,casillas.Count)].OnMouseDown();
+            Casilla seleccionada = casillas[0];
+            maxDistance = Vector2Int.Distance(townHallLocation, new Vector2Int(seleccionada.mapaX,seleccionada.mapaY));
+            foreach (Casilla casilla in casillas)
+            {
+                float distance = Vector2Int.Distance(townHallLocation, new Vector2Int(casilla.mapaX,casilla.mapaY));
+                if (distance >= maxDistance){
+                    seleccionada = casilla;
+                }
+            }
+            seleccionada.OnMouseDown();
         }
     }
 
