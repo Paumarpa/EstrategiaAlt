@@ -30,7 +30,7 @@ public class Unidad : MonoBehaviour
     //pathfinding
     Vector3[] camino;
     private int indiceObj;
-    bool ispathfinding = false;
+    public bool ispathfinding = false;
     encontrarCamino encontrarC;
 
     public Vector2Int Location;
@@ -231,6 +231,7 @@ public class Unidad : MonoBehaviour
                     ResetIconosArmas();
                     GetEnemigos();
                     seHaMovido = true;
+                    ispathfinding = false;
                     yield break;
                 }
                 currentWaypoint = camino[indiceObj];

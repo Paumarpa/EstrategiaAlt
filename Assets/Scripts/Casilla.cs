@@ -74,6 +74,7 @@ public class Casilla : MonoBehaviour
             gm.unidadSeleccionada.Mover(this.transform.position);
         }
     }
+    
     // Update is called once per frame
     void Update()
     {

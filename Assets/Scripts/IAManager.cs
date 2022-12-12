@@ -12,7 +12,7 @@ public class IAManager : MonoBehaviour
     public int id = 2;
 
     const int MANA_MAX = 15;
-    const float SIMULATION_STEP = 0.15f;
+    const float SIMULATION_STEP = 0.25f;
 
     private Grid grid;
 
@@ -22,6 +22,8 @@ public class IAManager : MonoBehaviour
 
     private bool strategyDecided = false;
     private bool townHallCreated = false;
+
+    private bool working = false;
     public Strategy strategy;
 
     // Start is called before the first frame update
@@ -80,29 +82,31 @@ public class IAManager : MonoBehaviour
     IEnumerator doAction(){
         
         while (strategy.isActionAvailable()){
-            Action action = strategy.getNextAction();
-            Debug.Log("doAction: " + action);
+            if(!working){
+                Action action = strategy.getNextAction();
+                Debug.Log("doAction: " + action);
 
-            switch (action.getType())
-            {
-                case ActionTypes.BUILD_COLLECTOR:
-                    createBuildingAction(action);
-                    break;
-                case ActionTypes.BUILD_TOWER:
-                    createBuildingAction(action);
-                    break;
-                case ActionTypes.BUILD_BARRACKS:
-                    createBuildingAction(action);
-                    break;
-                case ActionTypes.CREATE_UNIT:
-                    createUnitAction(action);
-                    break;
-                case ActionTypes.MOVE_UNIT:
-                    moveUnitAction(action);
-                    break;
-                default:
-                    Debug.Log("Nada que hacer" + " Mana: " + mana + " Coins: " + coins);
-                    break;
+                switch (action.getType())
+                {
+                    case ActionTypes.BUILD_COLLECTOR:
+                        createBuildingAction(action);
+                        break;
+                    case ActionTypes.BUILD_TOWER:
+                        createBuildingAction(action);
+                        break;
+                    case ActionTypes.BUILD_BARRACKS:
+                        createBuildingAction(action);
+                        break;
+                    case ActionTypes.CREATE_UNIT:
+                        createUnitAction(action);
+                        break;
+                    case ActionTypes.MOVE_UNIT:
+                        moveUnitAction(action);
+                        break;
+                    default:
+                        Debug.Log("Nada que hacer" + " Mana: " + mana + " Coins: " + coins);
+                        break;
+                }
             }
 
             yield return new WaitForSeconds(SIMULATION_STEP);
@@ -164,8 +168,19 @@ public class IAManager : MonoBehaviour
     }
 
     public void moveUnitAction(Action action){
-        action.gameObject.GetComponent<Unidad>().OnMouseDownIA();
-        action.gameObject.GetComponent<Unidad>().MoverIA();
+        Unidad unidad = action.gameObject.GetComponent<Unidad>();
+        unidad.OnMouseDownIA();
+        unidad.MoverIA();
+        working = true;
+        StartCoroutine(WaitForFinishMovement(unidad));
+    }
+
+    IEnumerator WaitForFinishMovement(Unidad unidad){
+        while(unidad.ispathfinding){
+            yield return new WaitForSeconds(0.15f);
+        }
+        working = false;
+        yield return null;
     }
 
     public void createBuildingAction(Action action){
