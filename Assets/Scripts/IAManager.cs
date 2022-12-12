@@ -227,6 +227,9 @@ public class IAManager : MonoBehaviour
         if (isValidLocation(location)){
             GameObject unit = Instantiate(Resources.Load(resource), grid.GetGlobalPosition(location.x,location.y), Quaternion.identity) as GameObject;
             unit.transform.parent = transform;
+            if(id == 2){
+                unit.GetComponent<SpriteRenderer>().color = new Color(0,0,1,1);
+            }
             unit.GetComponent<Unidad>().numJugador = id;
             unit.GetComponent<Unidad>().Location = location;
             decMana(ActionManager.getActionSpecifications(action.getType()).getManaCost());

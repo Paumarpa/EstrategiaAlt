@@ -28,7 +28,7 @@ public class Mapa : MonoBehaviour
                 var casillaSpawn = Instantiate(casillaPrefab, new Vector3(x, y), Quaternion.identity);
                 casillaSpawn.mapaX = x;
                 casillaSpawn.mapaY = y;
-                if (Random.Range(0, 5) == 0 && casillaSpawn.esAccesible())
+                if (Random.Range(0, 15) == 0 && casillaSpawn.esAccesible())
                 {
                     var obstaculoSpawn = Instantiate(obstaculoPrefab, new Vector3(x, y), Quaternion.identity);
                 }
