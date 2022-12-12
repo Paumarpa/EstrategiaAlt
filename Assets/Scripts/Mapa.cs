@@ -43,7 +43,7 @@ public class Mapa : MonoBehaviour
     {
         List<Casilla> result = new List<Casilla>();
         
-        if( vision == 0 )
+        if( vision == 0 || casilla == null)
             return result;
 
         for (int x = -1; x <= 1; x++)
