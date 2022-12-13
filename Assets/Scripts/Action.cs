@@ -22,6 +22,7 @@ public class Action
         this.manaCost = other.manaCost;
         this.coinCost = other.coinCost;
         this.gameObject = other.gameObject;
+        this.target = other.target;
     }    
 
     public ActionTypes getType(){

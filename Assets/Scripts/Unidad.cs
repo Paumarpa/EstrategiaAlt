@@ -204,6 +204,7 @@ public class Unidad : MonoBehaviour
         //StartCoroutine(EMover(objetivo));
     }
 
+    //Alejarse lo más posible del ayuntamiento
     public void MoveToExploreIA(Vector2Int townHallLocation){
         
         Casilla actual = mapa.encontrarCasillaLocation(this.Location);
@@ -217,6 +218,7 @@ public class Unidad : MonoBehaviour
                 float distance = Vector2Int.Distance(townHallLocation, casilla.Location);
                 if (distance >= maxDistance){
                     seleccionada = casilla;
+                    maxDistance = distance;
                 }
             }
             seleccionada.OnMouseDown();
@@ -288,7 +290,7 @@ public class Unidad : MonoBehaviour
     {
         enemigosEnRango.Clear();
 
-        foreach (Unidad unidad in FindObjectsOfType<Unidad>())
+        foreach (Unidad unidad in FindObjectsOfType<Unidad>())//TODO utilizar el gameobject enemigo
         {
             if (Mathf.Abs(transform.position.x - unidad.transform.position.x) + Mathf.Abs(transform.position.y - unidad.transform.position.y) <= rangoAtaque)
             {

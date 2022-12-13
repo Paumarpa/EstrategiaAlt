@@ -12,7 +12,7 @@ public class IAManager : MonoBehaviour
     public int id = 2;
 
     const int MANA_MAX = 15;
-    const float SIMULATION_STEP = 0.5f;
+    const float SIMULATION_STEP = 0.25f;
 
     private Grid grid;
 
@@ -89,7 +89,7 @@ public class IAManager : MonoBehaviour
         while (strategy.isActionAvailable()){
             if(!working){
                 Action action = strategy.getNextAction();
-                //Debug.Log("doAction: " + action);
+                Debug.Log("doAction: " + action);
 
                 switch (action.getType())
                 {

@@ -29,7 +29,7 @@ public class Mapa : MonoBehaviour
                 casillaSpawn.mapaX = x;
                 casillaSpawn.mapaY = y;
                 casillaSpawn.Location = new Vector2Int(x+ancho/2, y+alto/2);
-                if (Random.Range(0, 15) == 0 && casillaSpawn.esAccesible())
+                if (Random.Range(0, 95) == 0 && casillaSpawn.esAccesible())
                 {
                     var obstaculoSpawn = Instantiate(obstaculoPrefab, new Vector3(x, y), Quaternion.identity);
                 }

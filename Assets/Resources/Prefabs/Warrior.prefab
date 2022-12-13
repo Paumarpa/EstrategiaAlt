@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seleccionado: 0
-  velocidad: 3
+  velocidad: 6
   seHaMovido: 0
   numJugador: 2
   rangoAtaque: 1
@@ -109,6 +109,7 @@ MonoBehaviour:
   vida: 5
   danoAtaque: 0
   armadura: 1
+  ispathfinding: 0
   Location: {x: 0, y: 0}
 --- !u!61 &2529332519181101705
 BoxCollider2D:
