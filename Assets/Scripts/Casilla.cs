@@ -15,6 +15,8 @@ public class Casilla : MonoBehaviour
     public bool accesible;
     public int mapaX;
     public int mapaY;
+
+    public Vector2Int Location;
     GameMaster gm;
 
 

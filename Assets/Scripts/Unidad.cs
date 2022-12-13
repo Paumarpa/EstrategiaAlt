@@ -205,16 +205,16 @@ public class Unidad : MonoBehaviour
     }
 
     public void MoveToExploreIA(Vector2Int townHallLocation){
-        Vector2 pos = new Vector2(transform.position.x,transform.position.y);
-        Casilla actual = mapa.encontrarCasillaPos(pos);
+        
+        Casilla actual = mapa.encontrarCasillaLocation(this.Location);
         List<Casilla> casillas = mapa.GetCasillasVisibles(actual, velocidad);
         float maxDistance;
         if (casillas.Count > 0){
             Casilla seleccionada = casillas[0];
-            maxDistance = Vector2Int.Distance(townHallLocation, new Vector2Int(seleccionada.mapaX,seleccionada.mapaY));
+            maxDistance = Vector2Int.Distance(townHallLocation, seleccionada.Location);
             foreach (Casilla casilla in casillas)
             {
-                float distance = Vector2Int.Distance(townHallLocation, new Vector2Int(casilla.mapaX,casilla.mapaY));
+                float distance = Vector2Int.Distance(townHallLocation, casilla.Location);
                 if (distance >= maxDistance){
                     seleccionada = casilla;
                 }
@@ -233,10 +233,10 @@ public class Unidad : MonoBehaviour
         if (casillas.Count > 0){
             Unidad enemigoSeleccionado = GetEnemigoMasCercano();
             Casilla seleccionada = casillas[0];
-            minDistance = Vector2Int.Distance(enemigoSeleccionado.Location, new Vector2Int(seleccionada.mapaX,seleccionada.mapaY));
+            minDistance = Vector2Int.Distance(enemigoSeleccionado.Location, seleccionada.Location);
             foreach (Casilla casilla in casillas)
             {
-                float distance = Vector2Int.Distance(enemigoSeleccionado.Location, new Vector2Int(casilla.mapaX,casilla.mapaY));
+                float distance = Vector2Int.Distance(enemigoSeleccionado.Location, casilla.Location);
                 if (distance <= minDistance){
                     seleccionada = casilla;
                 }

@@ -28,6 +28,7 @@ public class Mapa : MonoBehaviour
                 var casillaSpawn = Instantiate(casillaPrefab, new Vector3(x, y), Quaternion.identity);
                 casillaSpawn.mapaX = x;
                 casillaSpawn.mapaY = y;
+                casillaSpawn.Location = new Vector2Int(x+ancho/2, y+alto/2);
                 if (Random.Range(0, 15) == 0 && casillaSpawn.esAccesible())
                 {
                     var obstaculoSpawn = Instantiate(obstaculoPrefab, new Vector3(x, y), Quaternion.identity);
@@ -88,6 +89,18 @@ public class Mapa : MonoBehaviour
             }
         return null;
 
+        }
+
+        public Casilla encontrarCasillaLocation(Vector2Int location)
+        {
+            foreach (KeyValuePair<Vector2,Casilla> item in casillas)
+            {
+                if (item.Value.Location == location){
+                    return item.Value;
+                }
+            }
+
+            return null;
         }
 
 

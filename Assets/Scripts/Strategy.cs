@@ -68,7 +68,7 @@ public class Strategy
                 break;
         }
 
-        Debug.Log("Estrategia con " + plannedActions.Count + " acciones.");
+        //Debug.Log("Estrategia con " + plannedActions.Count + " acciones.");
     }
 
     public void planGrow(int manaAvailable, int coinAvailable, PlayerOrIA myUnits){
