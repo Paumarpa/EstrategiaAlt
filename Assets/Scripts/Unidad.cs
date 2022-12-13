@@ -87,7 +87,7 @@ public class Unidad : MonoBehaviour
 
     public void AttackIA(GameObject target){
         if (target != null){
-            Unidad enemigo = target.GetComponent<Unidad>();
+            Unidad enemigo = GetEnemigoMasCercano();
             if (this.enemigosEnRango.Contains(enemigo) && !this.haAtacado){
                 Atacar(enemigo);
             }

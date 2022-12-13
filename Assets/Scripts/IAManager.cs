@@ -12,7 +12,7 @@ public class IAManager : MonoBehaviour
     public int id = 2;
 
     const int MANA_MAX = 15;
-    const float SIMULATION_STEP = 0.25f;
+    const float SIMULATION_STEP = 0.5f;
 
     private Grid grid;
 
