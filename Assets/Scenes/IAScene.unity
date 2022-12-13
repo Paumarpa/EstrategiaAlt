@@ -181,6 +181,7 @@ GameObject:
   m_Component:
   - component: {fileID: 353433383}
   - component: {fileID: 353433382}
+  - component: {fileID: 353433384}
   m_Layer: 0
   m_Name: IA2
   m_TagString: Untagged
@@ -205,6 +206,7 @@ MonoBehaviour:
   turnos: 1
   GMS: {fileID: 976626726}
   id: 2
+  enemy: {fileID: 701311707}
 --- !u!4 &353433383
 Transform:
   m_ObjectHideFlags: 0
@@ -220,6 +222,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &353433384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 353433381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1326faae29e4a994fbb79710e929fd9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &590951148
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,6 +277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 701311706}
   - component: {fileID: 701311705}
+  - component: {fileID: 701311707}
   m_Layer: 0
   m_Name: IA1
   m_TagString: Untagged
@@ -287,6 +302,7 @@ MonoBehaviour:
   turnos: 1
   GMS: {fileID: 976626726}
   id: 1
+  enemy: {fileID: 353433384}
 --- !u!4 &701311706
 Transform:
   m_ObjectHideFlags: 0
@@ -302,6 +318,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &701311707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701311704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1326faae29e4a994fbb79710e929fd9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &725935286
 GameObject:
   m_ObjectHideFlags: 0
@@ -913,6 +941,7 @@ MonoBehaviour:
   inaccesible:
     serializedVersion: 2
     m_Bits: 64
+  gridCreated: 0
   ladoGridX: 0
   ladoGridY: 0
 --- !u!4 &1791455629

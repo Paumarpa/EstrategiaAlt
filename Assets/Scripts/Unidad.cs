@@ -85,6 +85,15 @@ public class Unidad : MonoBehaviour
         }
     }
 
+    public void AttackIA(GameObject target){
+        if (target != null){
+            Unidad enemigo = target.GetComponent<Unidad>();
+            if (this.enemigosEnRango.Contains(enemigo) && !this.haAtacado){
+                Atacar(enemigo);
+            }
+        }
+    }
+
     public void OnMouseDownIA()
     {
         ResetIconosArmas();
@@ -214,7 +223,27 @@ public class Unidad : MonoBehaviour
         }
     }
 
-   
+
+    //Mover hacia el enemigo más cercano
+   public void MoveToAttackIA(GameObject target){
+        Vector2 pos = new Vector2(transform.position.x,transform.position.y);
+        Casilla actual = mapa.encontrarCasillaPos(pos);
+        List<Casilla> casillas = mapa.GetCasillasVisibles(actual, velocidad);
+        float minDistance;
+        if (casillas.Count > 0){
+            Unidad enemigoSeleccionado = GetEnemigoMasCercano();
+            Casilla seleccionada = casillas[0];
+            minDistance = Vector2Int.Distance(enemigoSeleccionado.Location, new Vector2Int(seleccionada.mapaX,seleccionada.mapaY));
+            foreach (Casilla casilla in casillas)
+            {
+                float distance = Vector2Int.Distance(enemigoSeleccionado.Location, new Vector2Int(casilla.mapaX,casilla.mapaY));
+                if (distance <= minDistance){
+                    seleccionada = casilla;
+                }
+            }
+            seleccionada.OnMouseDown();
+        }
+    }
 
     private void OnCaminEnc(Vector3[] newCamino, bool exito)
     {
@@ -253,5 +282,45 @@ public class Unidad : MonoBehaviour
 
         }
 
+    }
+
+    public List<Unidad> GetEnemigosEnRango()
+    {
+        enemigosEnRango.Clear();
+
+        foreach (Unidad unidad in FindObjectsOfType<Unidad>())
+        {
+            if (Mathf.Abs(transform.position.x - unidad.transform.position.x) + Mathf.Abs(transform.position.y - unidad.transform.position.y) <= rangoAtaque)
+            {
+                if(unidad.numJugador != gm.turno && !haAtacado)
+                {
+                    enemigosEnRango.Add(unidad);
+                }
+            }
+        }
+
+        return enemigosEnRango;
+    }
+
+    public Unidad GetEnemigoMasCercano()
+    {
+        List<Unidad> enemigos =  GetEnemigosEnRango();
+
+        float minDistance;
+        Unidad enemigoSeleccionado = null;
+
+        if (enemigos.Count > 0){
+            minDistance = Vector2Int.Distance(this.Location, enemigos[0].Location);
+
+            foreach (Unidad enemigo in enemigos)
+            {
+                float distance = Vector2Int.Distance(this.Location, enemigo.Location);
+                if (distance < minDistance ){
+                    enemigoSeleccionado = enemigo;
+                }
+            }
+        }
+
+        return enemigoSeleccionado;
     }
 }

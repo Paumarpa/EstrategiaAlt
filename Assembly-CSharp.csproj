@@ -36,6 +36,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets/Scripts/PlayerOrIA.cs" />
      <Compile Include="Assets/Scripts/Unidad.cs" />
      <Compile Include="Assets/Scripts/StrategyTypes.cs" />
      <Compile Include="Assets/Scripts/Mapa.cs" />

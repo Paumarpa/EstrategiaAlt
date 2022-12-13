@@ -7,11 +7,14 @@ public class Action
 
     public GameObject gameObject;
 
-    public Action(ActionTypes type, int mana, int coin, GameObject gameObject = null){
+    public GameObject target;
+
+    public Action(ActionTypes type, int mana, int coin, GameObject gameObject = null, GameObject target = null){
         this.type = type;
         this.manaCost = mana;
         this.coinCost = coin;
         this.gameObject = gameObject;
+        this.target = target;
     }
 
     public Action(Action other){
