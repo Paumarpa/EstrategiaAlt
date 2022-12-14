@@ -26,10 +26,14 @@ public class IAManager : MonoBehaviour
     private bool working = false;
     public Strategy strategy;
 
+    public PlayerOrIA enemy;
+    private PlayerOrIA myUnits;
+
     // Start is called before the first frame update
     void Start()
     {
         grid = GameObject.Find("Pathfinding").GetComponent<Grid>();
+        myUnits = gameObject.GetComponent<PlayerOrIA>();
         StartCoroutine("createTownHall");
     }
 
@@ -50,12 +54,13 @@ public class IAManager : MonoBehaviour
     }
 
     void DecideStrategy(){
-        int collectors = getNum("Collector");
-        int towers = getNum("Tower");
-        int barracks = getNum("Barracks");
-        int units = getNum("Unit");
-        strategy = StrategyManager.getStrategy(collectors,towers,barracks,units, false, false);
-        strategy.planActions(mana,coins,this);
+        int collectors = myUnits.getNum("Collector");
+        int towers = myUnits.getNum("Tower");
+        int barracks = myUnits.getNum("Barracks");
+        int units = myUnits.getNum("Unit");
+        bool enemyDiscovered = IsEnemyDiscovered();
+        strategy = StrategyManager.getStrategy(collectors,towers,barracks,units, enemyDiscovered, false);
+        strategy.planActions(mana,coins,myUnits,enemy);
         strategyDecided = true;
     }
 
@@ -102,6 +107,9 @@ public class IAManager : MonoBehaviour
                         break;
                     case ActionTypes.MOVE_UNIT:
                         moveUnitAction(action);
+                        break;
+                    case ActionTypes.ATTACK_UNIT:
+                        attackUnitAction(action);
                         break;
                     default:
                         Debug.Log("Nada que hacer" + " Mana: " + mana + " Coins: " + coins);
@@ -170,9 +178,22 @@ public class IAManager : MonoBehaviour
     public void moveUnitAction(Action action){
         Unidad unidad = action.gameObject.GetComponent<Unidad>();
         unidad.OnMouseDownIA();
-        unidad.MoveToExploreIA(townHallLocation);
+        if(action.target == null){
+            unidad.MoveToExploreIA(this.townHallLocation);
+        }else{
+            unidad.MoveToAttackIA(action.target);
+        }
+        
         working = true;
         StartCoroutine(WaitForFinishMovement(unidad));
+    }
+
+    public void attackUnitAction(Action action){
+        Unidad unidad = action.gameObject.GetComponent<Unidad>();
+        unidad.OnMouseDownIA();
+        if(action.target != null){
+            unidad.AttackIA(action.target);
+        }
     }
 
     IEnumerator WaitForFinishMovement(Unidad unidad){
@@ -304,30 +325,13 @@ public class IAManager : MonoBehaviour
         return isValidLocation(x,y);
     }
 
-    public int getNum(string type){
-
-        int resultado = 0;
-
-        foreach (Transform child in transform)
-        {
-            if (child.gameObject.tag == type){
-                resultado++;
+    public bool IsEnemyDiscovered(){
+        foreach (GameObject unidad in myUnits.getGameObjects("Unit")){
+            if (unidad.GetComponent<Unidad>().GetEnemigosEnRango(enemy).Count > 0){
+                return true;
             }
         }
 
-        return resultado;
+        return false;
     }
-
-    public List<GameObject> getGameObjects(string type){
-        List<GameObject> result = new List<GameObject>();
-        foreach (Transform child in transform)
-        {
-            if (child.gameObject.tag == type){
-                result.Add(child.gameObject);
-            }
-        }
-
-        return result;
-    }
-
 }

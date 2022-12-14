@@ -28,7 +28,8 @@ public class Mapa : MonoBehaviour
                 var casillaSpawn = Instantiate(casillaPrefab, new Vector3(x, y), Quaternion.identity);
                 casillaSpawn.mapaX = x;
                 casillaSpawn.mapaY = y;
-                if (Random.Range(0, 15) == 0 && casillaSpawn.esAccesible())
+                casillaSpawn.Location = new Vector2Int(x+ancho/2, y+alto/2);
+                if (Random.Range(0, 95) == 0 && casillaSpawn.esAccesible())
                 {
                     var obstaculoSpawn = Instantiate(obstaculoPrefab, new Vector3(x, y), Quaternion.identity);
                 }
@@ -42,16 +43,20 @@ public class Mapa : MonoBehaviour
     public List<Casilla> GetCasillasVisibles(Casilla casilla,int vision)
     {
         List<Casilla> result = new List<Casilla>();
-        
-        if( vision == 0 || casilla == null)
+
+        if (casilla == null){
             return result;
+        }
+        
+        if( vision == 0){
+            result.Add(casilla);
+            return result;
+        }
 
         for (int x = -1; x <= 1; x++)
         {
             for (int y = -1; y <= 1; y++)
-            {
-                
-                
+            {            
                 if (Mathf.Abs(x) - Mathf.Abs(y) == 0)
                     continue;
                 else
@@ -67,13 +72,10 @@ public class Mapa : MonoBehaviour
                     if ( newCasilla.esAccesible())
                     {
                         newCasilla.highLight();
-                        result.Add(newCasilla);
-
                         result.AddRange(GetCasillasVisibles(newCasilla, vision - 1));
                     }
 
                 }
-                
             }
         }
 
@@ -88,6 +90,18 @@ public class Mapa : MonoBehaviour
             }
         return null;
 
+        }
+
+        public Casilla encontrarCasillaLocation(Vector2Int location)
+        {
+            foreach (KeyValuePair<Vector2,Casilla> item in casillas)
+            {
+                if (item.Value.Location == location){
+                    return item.Value;
+                }
+            }
+
+            return null;
         }
 
 
