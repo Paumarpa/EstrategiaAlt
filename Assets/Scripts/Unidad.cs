@@ -87,7 +87,7 @@ public class Unidad : MonoBehaviour
 
     public void AttackIA(GameObject target){
         if (target != null){
-            Unidad enemigo = GetEnemigoMasCercano();
+            Unidad enemigo = GetEnemigoMasCercano(target.GetComponent<PlayerOrIA>());
             if (this.enemigosEnRango.Contains(enemigo) && !this.haAtacado){
                 Atacar(enemigo);
             }
@@ -235,7 +235,7 @@ public class Unidad : MonoBehaviour
         List<Casilla> casillas = mapa.GetCasillasVisibles(actual, velocidad);
         float minDistance;
         if (casillas.Count > 0){
-            Unidad enemigoSeleccionado = GetEnemigoMasCercano();
+            Unidad enemigoSeleccionado = GetEnemigoMasCercano(target.GetComponent<PlayerOrIA>());
             Casilla seleccionada = casillas[0];
             minDistance = Vector2Int.Distance(enemigoSeleccionado.Location, seleccionada.Location);
             foreach (Casilla casilla in casillas)
@@ -289,27 +289,26 @@ public class Unidad : MonoBehaviour
 
     }
 
-    public List<Unidad> GetEnemigosEnRango()
+    public List<Unidad> GetEnemigosEnRango(PlayerOrIA enemy)
     {
         enemigosEnRango.Clear();
 
-        foreach (Unidad unidad in FindObjectsOfType<Unidad>())//TODO utilizar el gameobject enemigo
+        foreach (GameObject item in enemy.getGameObjects("Unit"))
         {
+            Unidad unidad = item.GetComponent<Unidad>();
+
             if (Mathf.Abs(transform.position.x - unidad.transform.position.x) + Mathf.Abs(transform.position.y - unidad.transform.position.y) <= rangoAtaque)
             {
-                if(unidad.numJugador != gm.turno && !haAtacado)
-                {
-                    enemigosEnRango.Add(unidad);
-                }
+                enemigosEnRango.Add(unidad);
             }
         }
 
         return enemigosEnRango;
     }
 
-    public Unidad GetEnemigoMasCercano()
+    public Unidad GetEnemigoMasCercano(PlayerOrIA enemy)
     {
-        List<Unidad> enemigos =  GetEnemigosEnRango();
+        List<Unidad> enemigos =  GetEnemigosEnRango(enemy);
 
         float minDistance;
         Unidad enemigoSeleccionado = null;

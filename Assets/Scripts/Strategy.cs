@@ -126,7 +126,7 @@ public class Strategy
 
         while(ActionManager.isActionAvailable(mana,coin)){
             if (units > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT)){
-                if(unitsList[index].GetComponent<Unidad>().GetEnemigoMasCercano() != null){
+                if(unitsList[index].GetComponent<Unidad>().GetEnemigoMasCercano(enemyUnits) != null){
                     Action action = new Action(ActionManager.actions[(int)ActionTypes.MOVE_UNIT]);
                     action.gameObject = unitsList[index];
                     action.target = enemyUnits.gameObject;

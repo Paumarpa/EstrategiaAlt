@@ -327,7 +327,7 @@ public class IAManager : MonoBehaviour
 
     public bool IsEnemyDiscovered(){
         foreach (GameObject unidad in myUnits.getGameObjects("Unit")){
-            if (unidad.GetComponent<Unidad>().GetEnemigosEnRango().Count > 0){
+            if (unidad.GetComponent<Unidad>().GetEnemigosEnRango(enemy).Count > 0){
                 return true;
             }
         }
