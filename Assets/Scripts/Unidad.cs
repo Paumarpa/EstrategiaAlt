@@ -210,6 +210,7 @@ public class Unidad : MonoBehaviour
         Casilla actual = mapa.encontrarCasillaLocation(this.Location);
         List<Casilla> casillas = mapa.GetCasillasVisibles(actual, velocidad);
         float maxDistance;
+
         if (casillas.Count > 0){
             Casilla seleccionada = casillas[0];
             maxDistance = Vector2Int.Distance(townHallLocation, seleccionada.Location);
@@ -221,6 +222,7 @@ public class Unidad : MonoBehaviour
                     maxDistance = distance;
                 }
             }
+            this.Location = seleccionada.Location;
             seleccionada.OnMouseDown();
         }
     }
@@ -243,6 +245,7 @@ public class Unidad : MonoBehaviour
                     seleccionada = casilla;
                 }
             }
+            this.Location = seleccionada.Location;
             seleccionada.OnMouseDown();
         }
     }
@@ -279,7 +282,7 @@ public class Unidad : MonoBehaviour
             }
 
             yield return null;
-            transform.position = Vector2.MoveTowards(transform.position, currentWaypoint, velocidad * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, currentWaypoint, velocidad*10 * Time.deltaTime);
 
 
         }
@@ -319,6 +322,7 @@ public class Unidad : MonoBehaviour
                 float distance = Vector2Int.Distance(this.Location, enemigo.Location);
                 if (distance < minDistance ){
                     enemigoSeleccionado = enemigo;
+                    minDistance = distance;
                 }
             }
         }

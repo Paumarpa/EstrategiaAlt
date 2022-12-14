@@ -55,7 +55,8 @@ public class Casilla : MonoBehaviour
         {
             return false;
         }
-        else return true;
+        else
+            return true;
     }
 
     public void highLight()

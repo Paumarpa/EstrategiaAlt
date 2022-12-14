@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seleccionado: 0
-  velocidad: 6
+  velocidad: 3
   seHaMovido: 0
   numJugador: 2
   rangoAtaque: 1
