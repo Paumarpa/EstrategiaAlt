@@ -10,7 +10,9 @@ public class UIStatsManager : MonoBehaviour
 
     public GameMaster master;
 
-    public TMP_Text player1Text;
+    public TMP_Text player1TextCoins;
+    public TMP_Text player1TextMana;
+    public TMP_Text player1TextActions;
     public TMP_Text player2Text;
 
     public TMP_Text turnText;
@@ -24,6 +26,9 @@ public class UIStatsManager : MonoBehaviour
     void FixedUpdate()
     {
         string texto;
+        string texto1;
+        string texto2;
+        string texto3;
 
         int mana = player1.getMana();
         int coins = player1.getCoins();
@@ -31,12 +36,18 @@ public class UIStatsManager : MonoBehaviour
         Strategy strategy = player1.getStrategy();
 
         if (strategy != null){
-            texto = "Mana: " + mana + " Coins: " + coins + " " + strategy.getType();
+            texto1 = mana.ToString();
+            texto2 = coins.ToString();
+            texto3 = strategy.getType().ToString();
         }else{
-            texto = "Mana: " + mana + " Coins: " + coins;
+            texto1 = mana.ToString();
+            texto2 = coins.ToString();
+            texto3 = "";
         }
 
-        player1Text.SetText(texto);
+        player1TextCoins.SetText(texto1);
+        player1TextMana.SetText(texto2);
+        player1TextActions.SetText(texto3);
 
         mana = player2.getMana();
         coins = player2.getCoins();

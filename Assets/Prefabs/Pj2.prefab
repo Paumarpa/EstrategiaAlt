@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &17081739818518298
 Transform:
   m_ObjectHideFlags: 0
@@ -25,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5852330002616849984}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.03, y: 0.02, z: -1.1}
-  m_LocalScale: {x: 0.18584487, y: 0.13736486, z: 1}
+  m_LocalPosition: {x: 0.03, y: -0.13, z: -1.1}
+  m_LocalScale: {x: 0.64, y: 0.5227179, z: 3.4437325}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5025726736438520129}
@@ -112,8 +112,8 @@ Transform:
   m_GameObject: {fileID: 7622111219771052665}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.37500003}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 17081739818518298}
   m_Father: {fileID: 0}
@@ -160,7 +160,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1c53d4f02959d834fb0b78d6f285fbb5, type: 3}
   m_Color: {r: 0.13238695, g: 0.26085487, b: 0.8018868, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -191,8 +191,10 @@ MonoBehaviour:
   haAtacado: 0
   armaIcono: {fileID: 5852330002616849984}
   vida: 5
-  "da\xF1oAtaque": 3
+  danoAtaque: 0
   armadura: 1
+  ispathfinding: 0
+  Location: {x: 0, y: 0}
 --- !u!61 &-1818626611244747013
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -210,7 +212,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 2.87, y: 2.89}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
