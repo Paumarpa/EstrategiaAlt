@@ -315,6 +315,7 @@ public class Unidad : MonoBehaviour
 
         if (enemigos.Count > 0){
             minDistance = Vector2Int.Distance(this.Location, enemigos[0].Location);
+            enemigoSeleccionado = enemigos[0];
 
             foreach (Unidad enemigo in enemigos)
             {

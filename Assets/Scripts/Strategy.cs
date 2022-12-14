@@ -125,7 +125,8 @@ public class Strategy
         */
 
         while(ActionManager.isActionAvailable(mana,coin)){
-            if (units > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT)){
+            if (unitsList.Count > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT)){
+                index = Random.Range(0,unitsList.Count);
                 if(unitsList[index].GetComponent<Unidad>().GetEnemigoMasCercano(enemyUnits) != null){
                     Action action = new Action(ActionManager.actions[(int)ActionTypes.MOVE_UNIT]);
                     action.gameObject = unitsList[index];
@@ -144,8 +145,7 @@ public class Strategy
                         coin -= ActionManager.getActionSpecifications(ActionTypes.ATTACK_UNIT).getCoinCost();
                     }
                 }
-                units -= 1;
-                index += 1;
+                unitsList.RemoveAt(index);
             }else if (towers < (units + 1) / 2 && ActionManager.isActionAvailable(mana,coin,ActionTypes.BUILD_TOWER)){
                 plannedActions.Add(ActionManager.actions[(int)ActionTypes.BUILD_TOWER]);
                 mana -= ActionManager.getActionSpecifications(ActionTypes.BUILD_TOWER).getManaCost();
@@ -174,7 +174,8 @@ public class Strategy
         int index = 0;
 
         while(ActionManager.isActionAvailable(mana,coin)){
-            if (units > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT)){
+            if (unitsList.Count > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT)){
+                index = Random.Range(0,unitsList.Count);
                 Action action = new Action(ActionManager.actions[(int)ActionTypes.MOVE_UNIT]);
                 action.gameObject = unitsList[index];
                 action.target = enemyUnits.gameObject;
@@ -199,8 +200,7 @@ public class Strategy
                     coin -= ActionManager.getActionSpecifications(ActionTypes.ATTACK_BUILDING).getCoinCost();
                 }
 
-                units -= 1;
-                index += 1;
+                unitsList.RemoveAt(index);
 
             }else if (ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT)){
                 plannedActions.Add(ActionManager.actions[(int)ActionTypes.CREATE_UNIT]);
@@ -226,14 +226,14 @@ public class Strategy
         int index = 0;
 
         while(ActionManager.isActionAvailable(mana,coin)){
-            if (units > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT)){
+            if (unitsList.Count > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT)){
                 Action action = new Action(ActionManager.actions[(int)ActionTypes.MOVE_UNIT]);
+                index = Random.Range(0,unitsList.Count);
                 action.gameObject = unitsList[index];
                 plannedActions.Add(action);
                 mana -= ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getManaCost();
                 coin -= ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getCoinCost();
-                units -= 1;
-                index += 1;
+                unitsList.RemoveAt(index);
             }else if (ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT)){
                 plannedActions.Add(ActionManager.actions[(int)ActionTypes.CREATE_UNIT]);
                 mana -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getManaCost();
