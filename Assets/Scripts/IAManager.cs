@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class IAManager : MonoBehaviour
 {
-    public int mana = 1;
-    public int coins = 50;
-
     public int turnos = 1;
     public GameMaster GMS;
     public int id = 2;
-
-    const int MANA_MAX = 15;
     const float SIMULATION_STEP = 0.25f;
 
     private Grid grid;
@@ -60,7 +55,7 @@ public class IAManager : MonoBehaviour
         int units = myUnits.getNum("Unit");
         bool enemyDiscovered = IsEnemyDiscovered();
         strategy = StrategyManager.getStrategy(collectors,towers,barracks,units, enemyDiscovered, false);
-        strategy.planActions(mana,coins,myUnits,enemy);
+        strategy.planActions(myUnits.getMana(),myUnits.getCoins(),myUnits,enemy);
         strategyDecided = true;
     }
 
@@ -74,12 +69,12 @@ public class IAManager : MonoBehaviour
 
     void UpdateResourcesNextTurn(){
         turnos++;
-        SetMana(turnos);
+        myUnits.SetMana(turnos);
 
         foreach (Transform child in transform)
         {
             if (child.gameObject.tag == "Collector"){
-                incCoins(COINS_BY_COLLECTOR);
+                myUnits.incCoins(COINS_BY_COLLECTOR);
             }
         }
     }
@@ -112,7 +107,7 @@ public class IAManager : MonoBehaviour
                         attackUnitAction(action);
                         break;
                     default:
-                        Debug.Log("Nada que hacer" + " Mana: " + mana + " Coins: " + coins);
+                        Debug.Log("Nada que hacer" + " Mana: " + myUnits.getMana() + " Coins: " + myUnits.getCoins());
                         break;
                 }
             }
@@ -134,42 +129,7 @@ public class IAManager : MonoBehaviour
         }
     }
 
-    public void SetMana(int value){
-        mana = value;
-        if (mana > MANA_MAX){
-            mana = MANA_MAX;
-        }
-    }
-
-    public void incMana(int value = 1){
-        mana += value;
-        if (mana > MANA_MAX){
-            mana = MANA_MAX;
-        }
-    }
-
-    public void decMana(int value = 1){
-        mana -= value;
-        if (mana < 0){
-            mana = 0;
-        }
-    }
-
-    public void incCoins(int value = 1){
-        coins += value;
-    }
-
-    public void decCoins(int value = 1){
-        coins -= value;
-    }
-
-    public int getMana(){
-        return mana;
-    }
-
-    public int getCoins(){
-        return coins;
-    }
+    
 
     public Strategy getStrategy(){
         return strategy;
@@ -230,8 +190,8 @@ public class IAManager : MonoBehaviour
             building.transform.parent = transform;
             building.GetComponent<Unidad>().numJugador = id;
             building.GetComponent<Unidad>().Location = location;
-            decMana(ActionManager.getActionSpecifications(action.getType()).getManaCost());
-            decCoins(ActionManager.getActionSpecifications(action.getType()).getCoinCost());
+            myUnits.decMana(ActionManager.getActionSpecifications(action.getType()).getManaCost());
+            myUnits.decCoins(ActionManager.getActionSpecifications(action.getType()).getCoinCost());
             grid.grid[location.x,location.y].accesible = false;
             
         }else{
@@ -253,8 +213,8 @@ public class IAManager : MonoBehaviour
             }
             unit.GetComponent<Unidad>().numJugador = id;
             unit.GetComponent<Unidad>().Location = location;
-            decMana(ActionManager.getActionSpecifications(action.getType()).getManaCost());
-            decCoins(ActionManager.getActionSpecifications(action.getType()).getCoinCost());
+            myUnits.decMana(ActionManager.getActionSpecifications(action.getType()).getManaCost());
+            myUnits.decCoins(ActionManager.getActionSpecifications(action.getType()).getCoinCost());
             grid.grid[location.x,location.y].accesible = false;
             
         }else{

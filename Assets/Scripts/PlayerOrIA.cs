@@ -4,6 +4,22 @@ using UnityEngine;
 
 public class PlayerOrIA : MonoBehaviour
 {
+    const int MANA_MAX = 15;
+    private bool human = false;
+    public IAManager IA;
+    public int mana = 1;
+    public int coins = 50;
+
+    void Start(){
+
+        IA = gameObject.GetComponent<IAManager>();
+        if (IA != null){
+            human = false;
+        }else{
+            human = true;
+        }
+
+    }
     public int getNum(string type){
 
         int resultado = 0;
@@ -28,5 +44,50 @@ public class PlayerOrIA : MonoBehaviour
         }
 
         return result;
+    }
+
+    public Strategy getStrategy(){
+        if(human){
+            return new Strategy(StrategyTypes.HUMAN);
+        }else{
+            return IA.getStrategy();
+        }
+    }
+
+    public void SetMana(int value){
+        mana = value;
+        if (mana > MANA_MAX){
+            mana = MANA_MAX;
+        }
+    }
+
+    public void incMana(int value = 1){
+        mana += value;
+        if (mana > MANA_MAX){
+            mana = MANA_MAX;
+        }
+    }
+
+    public void decMana(int value = 1){
+        mana -= value;
+        if (mana < 0){
+            mana = 0;
+        }
+    }
+
+    public void incCoins(int value = 1){
+        coins += value;
+    }
+
+    public void decCoins(int value = 1){
+        coins -= value;
+    }
+
+    public int getMana(){
+        return mana;
+    }
+
+    public int getCoins(){
+        return coins;
     }
 }

@@ -7,7 +7,7 @@ public class Strategy
     private List<Action> actions;
     private List<Action> plannedActions;
 
-    public Strategy(StrategyTypes type, List<Action> actions){
+    public Strategy(StrategyTypes type, List<Action> actions = null){
         this.type = type;
         this.actions = actions;
         this.plannedActions = new List<Action>();
