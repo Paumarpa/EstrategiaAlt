@@ -55,7 +55,9 @@ public class IAManager : MonoBehaviour
         int units = myUnits.getNum("Unit");
         bool enemyDiscovered = IsEnemyDiscovered();
         strategy = StrategyManager.getStrategy(collectors,towers,barracks,units, enemyDiscovered, false);
-        strategy.planActions(myUnits.getMana(),myUnits.getCoins(),myUnits,enemy);
+        strategy.setCoins(myUnits.getCoins());
+        strategy.setMana(myUnits.getMana());
+        strategy.planActions(myUnits,enemy);
         strategyDecided = true;
     }
 

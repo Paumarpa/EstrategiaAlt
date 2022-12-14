@@ -7,6 +7,9 @@ public class Strategy
     private List<Action> actions;
     private List<Action> plannedActions;
 
+    private int mana;
+    private int coin;
+
     public Strategy(StrategyTypes type, List<Action> actions = null){
         this.type = type;
         this.actions = actions;
@@ -21,10 +24,10 @@ public class Strategy
         return actions;
     }
 
-    public Action getAction(int manaAvailable, int coinAvailable){
+    public Action getAction(){
         for (int i = 1; i < actions.Count; i++)
         {
-            if(actions[i].getManaCost() <= manaAvailable && actions[i].getCoinCost() <= coinAvailable){
+            if(actions[i].getManaCost() <= mana && actions[i].getCoinCost() <= coin){
                 return actions[i];
             }
         }
@@ -45,23 +48,23 @@ public class Strategy
         return "Strategy: " + type;
     }
 
-    public void planActions(int manaAvailable, int coinAvailable, PlayerOrIA myUnits, PlayerOrIA enemyUnits){
+    public void planActions(PlayerOrIA myUnits, PlayerOrIA enemyUnits){
 
         this.plannedActions = new List<Action>();
 
         switch (type)
         {
             case StrategyTypes.GROW:
-                planGrow(manaAvailable,coinAvailable, myUnits);
+                planGrow(myUnits);
                 break;
             case StrategyTypes.ATTACK:
-                planAttack(manaAvailable,coinAvailable, myUnits, enemyUnits);
+                planAttack(myUnits, enemyUnits);
                 break;
             case StrategyTypes.DEFENSE:
-                planDefense(manaAvailable,coinAvailable, myUnits, enemyUnits);
+                planDefense(myUnits, enemyUnits);
                 break;
             case StrategyTypes.EXPLORE:
-                planExplore(manaAvailable,coinAvailable, myUnits);
+                planExplore(myUnits);
                 break;
             default:
                 this.plannedActions = new List<Action>();
@@ -71,9 +74,7 @@ public class Strategy
         Debug.Log("Estrategia con " + plannedActions.Count + " acciones.");
     }
 
-    public void planGrow(int manaAvailable, int coinAvailable, PlayerOrIA myUnits){
-        int mana = manaAvailable;
-        int coin = coinAvailable;
+    public void planGrow(PlayerOrIA myUnits){
 
         this.plannedActions = new List<Action>();
 
@@ -83,31 +84,58 @@ public class Strategy
         int units = myUnits.getNum("Unit");
 
         while(ActionManager.isActionAvailable(mana,coin)){
-            if (barracks < 2 && ActionManager.isActionAvailable(mana,coin,ActionTypes.BUILD_BARRACKS)){
-                plannedActions.Add(ActionManager.actions[(int)ActionTypes.BUILD_BARRACKS]);
-                mana -= ActionManager.getActionSpecifications(ActionTypes.BUILD_BARRACKS).getManaCost();
-                coin -= ActionManager.getActionSpecifications(ActionTypes.BUILD_BARRACKS).getCoinCost();
-            }else if (towers < (units + 1) / 2 && ActionManager.isActionAvailable(mana,coin,ActionTypes.BUILD_TOWER)){
-                plannedActions.Add(ActionManager.actions[(int)ActionTypes.BUILD_TOWER]);
-                mana -= ActionManager.getActionSpecifications(ActionTypes.BUILD_TOWER).getManaCost();
-                coin -= ActionManager.getActionSpecifications(ActionTypes.BUILD_TOWER).getCoinCost();
-            }else if (collectors > (units + 1) /3 && ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT)){
-                plannedActions.Add(ActionManager.actions[(int)ActionTypes.CREATE_UNIT]);
-                mana -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getManaCost();
-                coin -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getCoinCost();
-            }else if (ActionManager.isActionAvailable(mana,coin,ActionTypes.BUILD_COLLECTOR)){
-                plannedActions.Add(ActionManager.actions[(int)ActionTypes.BUILD_COLLECTOR]);
-                mana -= ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getManaCost();
-                coin -= ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getCoinCost();
-            }else{
+            if (barracks < 2 && ActionManager.isActionAvailable(mana,coin,ActionTypes.BUILD_BARRACKS))
+            {
+                planBuildBarracks();
+            }
+            else if (towers < (units + 1) / 2 && ActionManager.isActionAvailable(mana,coin,ActionTypes.BUILD_TOWER))
+            {
+                planBuildTower();
+            }
+            else if (collectors > (units + 1) /3 && ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT))
+            {
+                planCreateUnit();
+            }
+            else if (ActionManager.isActionAvailable(mana,coin,ActionTypes.BUILD_COLLECTOR))
+            {
+                planBuildCollector();
+            }
+            else
+            {
                 break;
             }
         }
     }
 
-    public void planDefense(int manaAvailable, int coinAvailable, PlayerOrIA myUnits, PlayerOrIA enemyUnits){
-        int mana = manaAvailable;
-        int coin = coinAvailable;
+    private void planBuildCollector()
+    {
+        plannedActions.Add(ActionManager.actions[(int)ActionTypes.BUILD_COLLECTOR]);
+        mana -= ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getManaCost();
+        coin -= ActionManager.getActionSpecifications(ActionTypes.BUILD_COLLECTOR).getCoinCost();
+    }
+
+    private void planCreateUnit()
+    {
+        plannedActions.Add(ActionManager.actions[(int)ActionTypes.CREATE_UNIT]);
+        mana -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getManaCost();
+        coin -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getCoinCost();
+    }
+
+    private void planBuildTower()
+    {
+        plannedActions.Add(ActionManager.actions[(int)ActionTypes.BUILD_TOWER]);
+        mana -= ActionManager.getActionSpecifications(ActionTypes.BUILD_TOWER).getManaCost();
+        coin -= ActionManager.getActionSpecifications(ActionTypes.BUILD_TOWER).getCoinCost();
+    }
+
+    private void planBuildBarracks()
+    {
+        plannedActions.Add(ActionManager.actions[(int)ActionTypes.BUILD_BARRACKS]);
+        mana -= ActionManager.getActionSpecifications(ActionTypes.BUILD_BARRACKS).getManaCost();
+        coin -= ActionManager.getActionSpecifications(ActionTypes.BUILD_BARRACKS).getCoinCost();
+    }
+
+    public void planDefense(PlayerOrIA myUnits, PlayerOrIA enemyUnits){
 
         this.plannedActions = new List<Action>();
 
@@ -147,22 +175,16 @@ public class Strategy
                 }
                 unitsList.RemoveAt(index);
             }else if (towers < (units + 1) / 2 && ActionManager.isActionAvailable(mana,coin,ActionTypes.BUILD_TOWER)){
-                plannedActions.Add(ActionManager.actions[(int)ActionTypes.BUILD_TOWER]);
-                mana -= ActionManager.getActionSpecifications(ActionTypes.BUILD_TOWER).getManaCost();
-                coin -= ActionManager.getActionSpecifications(ActionTypes.BUILD_TOWER).getCoinCost();
+                planBuildTower();
             }else if (ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT)){
-                plannedActions.Add(ActionManager.actions[(int)ActionTypes.CREATE_UNIT]);
-                mana -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getManaCost();
-                coin -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getCoinCost();
+                planCreateUnit();
             }else{
                 break;
             }
         }
     }
 
-    public void planAttack(int manaAvailable, int coinAvailable, PlayerOrIA myUnits, PlayerOrIA enemyUnits){
-        int mana = manaAvailable;
-        int coin = coinAvailable;
+    public void planAttack(PlayerOrIA myUnits, PlayerOrIA enemyUnits){
 
         this.plannedActions = new List<Action>();
 
@@ -203,18 +225,14 @@ public class Strategy
                 unitsList.RemoveAt(index);
 
             }else if (ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT)){
-                plannedActions.Add(ActionManager.actions[(int)ActionTypes.CREATE_UNIT]);
-                mana -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getManaCost();
-                coin -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getCoinCost();
+                planCreateUnit();
             }else{
                 break;
             }
         }
     }
 
-    public void planExplore(int manaAvailable, int coinAvailable, PlayerOrIA myUnits){
-        int mana = manaAvailable;
-        int coin = coinAvailable;
+    public void planExplore(PlayerOrIA myUnits){
 
         this.plannedActions = new List<Action>();
 
@@ -223,25 +241,29 @@ public class Strategy
         int barracks = myUnits.getNum("Barracks");
         int units = myUnits.getNum("Unit");
         List<GameObject> unitsList = myUnits.getGameObjects("Unit");
-        int index = 0;
 
         while(ActionManager.isActionAvailable(mana,coin)){
-            if (unitsList.Count > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT)){
-                Action action = new Action(ActionManager.actions[(int)ActionTypes.MOVE_UNIT]);
-                index = Random.Range(0,unitsList.Count);
-                action.gameObject = unitsList[index];
-                plannedActions.Add(action);
-                mana -= ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getManaCost();
-                coin -= ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getCoinCost();
+            if (unitsList.Count > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT))
+            {
+                int index = Random.Range(0, unitsList.Count);
+                planExploreMoveUnit(unitsList[index]);
                 unitsList.RemoveAt(index);
-            }else if (ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT)){
-                plannedActions.Add(ActionManager.actions[(int)ActionTypes.CREATE_UNIT]);
-                mana -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getManaCost();
-                coin -= ActionManager.getActionSpecifications(ActionTypes.CREATE_UNIT).getCoinCost();
+            }
+            else if (ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT)){
+                planCreateUnit();
             }else{
                 break;
             }
         }
+    }
+
+    private void planExploreMoveUnit(GameObject item)
+    {
+        Action action = new Action(ActionManager.actions[(int)ActionTypes.MOVE_UNIT]);
+        action.gameObject = item;
+        plannedActions.Add(action);
+        mana -= ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getManaCost();
+        coin -= ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getCoinCost();
     }
 
     public Action getNextAction(){
@@ -252,5 +274,13 @@ public class Strategy
         }
 
         return result;
+    }
+
+    public void setMana(int value){
+        this.mana = value;
+    }
+
+    public void setCoins(int value){
+        this.coin = value;
     }
 }
