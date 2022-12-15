@@ -90,4 +90,24 @@ public class PlayerOrIA : MonoBehaviour
     public int getCoins(){
         return coins;
     }
+
+    public GameObject GetUnitNearEnemyUnit(List<GameObject> myUnits, PlayerOrIA enemy){
+        foreach (GameObject unit in myUnits){
+            if (unit.GetComponent<Unidad>().GetEnemigosEnRango(enemy).Count > 0){
+                return unit;
+            }
+        }
+
+        return null;
+    }
+
+    public GameObject GetUnitNearEnemyBuilding(List<GameObject> myUnits, PlayerOrIA enemy){
+        foreach (GameObject unit in myUnits){
+            if (unit.GetComponent<Unidad>().GetBuildingsInRange(enemy).Count > 0){
+                return unit;
+            }
+        }
+
+        return null;
+    }
 }

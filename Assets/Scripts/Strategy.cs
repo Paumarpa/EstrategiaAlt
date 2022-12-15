@@ -123,16 +123,23 @@ public class Strategy
         List<GameObject> unitsList = myUnits.getGameObjects("Unit");
 
         while(ActionManager.isActionAvailable(mana,coin)){
-            if (unitsList.Count > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT)){
-                
-                int index = Random.Range(0,unitsList.Count);
-                
-                if(unitsList[index].GetComponent<Unidad>().GetEnemigoMasCercano(enemyUnits) != null){
+
+            GameObject myUnit = myUnits.GetUnitNearEnemyUnit(unitsList,enemyUnits);
+            if (unitsList.Count > 0 && myUnit != null){
+                int index = unitsList.IndexOf(myUnit);
+                if (index >= 0){
+                    Unidad enemigoMasCercano = unitsList[index].GetComponent<Unidad>().GetEnemigoMasCercano(enemyUnits);
                     
-                    planMoveUnit(unitsList[index], enemyUnits.gameObject);
-                    
-                    if (ActionManager.isActionAvailable(mana,coin,ActionTypes.ATTACK_UNIT)){
+                    if(ActionManager.isActionAvailable(mana,coin,ActionTypes.ATTACK_UNIT) && enemigoMasCercano != null){
                         planAttackUnit(unitsList[index], enemyUnits.gameObject);
+                    }
+                    else if(ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT) && enemigoMasCercano != null){
+                        
+                        planMoveUnit(unitsList[index], enemyUnits.gameObject);
+                        
+                        if (ActionManager.isActionAvailable(mana,coin,ActionTypes.ATTACK_UNIT)){
+                            planAttackUnit(unitsList[index], enemyUnits.gameObject);
+                        }
                     }
                 }
 

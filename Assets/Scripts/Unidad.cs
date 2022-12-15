@@ -18,6 +18,7 @@ public class Unidad : MonoBehaviour
     //ataque 
     public int rangoAtaque;
     List<Unidad> enemigosEnRango = new List<Unidad>();
+    List<Unidad> buildingsInRange = new List<Unidad>();
     public bool haAtacado;//solo puede atacar 1 vez por turno
     public GameObject armaIcono;
 
@@ -81,6 +82,8 @@ public class Unidad : MonoBehaviour
             if(gm.unidadSeleccionada.enemigosEnRango.Contains(unidad) && gm.unidadSeleccionada.haAtacado == false)
             {
                 gm.unidadSeleccionada.Atacar(unidad);
+            }else if(gm.unidadSeleccionada.buildingsInRange.Contains(unidad) && gm.unidadSeleccionada.haAtacado == false){
+                gm.unidadSeleccionada.Atacar(unidad);
             }
         }
     }
@@ -89,6 +92,15 @@ public class Unidad : MonoBehaviour
         if (target != null){
             Unidad enemigo = GetEnemigoMasCercano(target.GetComponent<PlayerOrIA>());
             if (this.enemigosEnRango.Contains(enemigo) && !this.haAtacado){
+                Atacar(enemigo);
+            }
+        }
+    }
+
+     public void AttackBuildingIA(GameObject target){
+        if (target != null){
+            Unidad enemigo = GetEnemigoMasCercano(target.GetComponent<PlayerOrIA>());
+            if (this.buildingsInRange.Contains(enemigo) && !this.haAtacado){
                 Atacar(enemigo);
             }
         }
@@ -172,7 +184,7 @@ public class Unidad : MonoBehaviour
         
     }
 
-    void GetEnemigos()
+    void GetEnemigos()// TODO Utilizar solo las unidades enemigas, no utilizar findobjectsoftype
     {
         enemigosEnRango.Clear();
 
@@ -309,6 +321,53 @@ public class Unidad : MonoBehaviour
     public Unidad GetEnemigoMasCercano(PlayerOrIA enemy)
     {
         List<Unidad> enemigos =  GetEnemigosEnRango(enemy);
+
+        float minDistance;
+        Unidad enemigoSeleccionado = null;
+
+        if (enemigos.Count > 0){
+            minDistance = Vector2Int.Distance(this.Location, enemigos[0].Location);
+            enemigoSeleccionado = enemigos[0];
+
+            foreach (Unidad enemigo in enemigos)
+            {
+                float distance = Vector2Int.Distance(this.Location, enemigo.Location);
+                if (distance < minDistance ){
+                    enemigoSeleccionado = enemigo;
+                    minDistance = distance;
+                }
+            }
+        }
+
+        return enemigoSeleccionado;
+    }
+
+    public List<Unidad> GetBuildingsInRange(PlayerOrIA enemy)
+    {
+        buildingsInRange.Clear();
+
+        List<GameObject> lista =   enemy.getGameObjects("Tower");
+        lista.AddRange(enemy.getGameObjects("Barracks"));
+        lista.AddRange(enemy.getGameObjects("Collector"));
+        lista.AddRange(enemy.getGameObjects("TownHall"));
+
+
+        foreach (GameObject item in lista)
+        {
+            Unidad unidad = item.GetComponent<Unidad>();
+
+            if (Mathf.Abs(transform.position.x - unidad.transform.position.x) + Mathf.Abs(transform.position.y - unidad.transform.position.y) <= rangoAtaque)
+            {
+                buildingsInRange.Add(unidad);
+            }
+        }
+
+        return buildingsInRange;
+    }
+
+    public Unidad GetNearestEnemyBuilding(PlayerOrIA enemy)
+    {
+        List<Unidad> enemigos =  GetBuildingsInRange(enemy);
 
         float minDistance;
         Unidad enemigoSeleccionado = null;
