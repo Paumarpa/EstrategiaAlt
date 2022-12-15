@@ -18,6 +18,10 @@ public class IAManager : MonoBehaviour
     private bool strategyDecided = false;
     private bool townHallCreated = false;
 
+    private bool enemyTownHallDiscovered = false;
+
+    private Vector2Int enemyTownHallLocation;
+
     private bool working = false;
     public Strategy strategy;
 
@@ -36,7 +40,6 @@ public class IAManager : MonoBehaviour
     {
         if (isMyTurn()){
             if (!strategyDecided){
-                //StartCoroutine("DecideStrategy");
                 DecideStrategy();
                 if (strategy.isActionAvailable()){
                     StartCoroutine("doAction");
@@ -54,7 +57,15 @@ public class IAManager : MonoBehaviour
         int barracks = myUnits.getNum("Barracks");
         int units = myUnits.getNum("Unit");
         bool enemyDiscovered = IsEnemyDiscovered();
-        strategy = StrategyManager.getStrategy(collectors,towers,barracks,units, enemyDiscovered, false);
+        
+        if (!enemyTownHallDiscovered){
+            enemyTownHallDiscovered = isEnemyTownHallDiscovered();
+            if (enemyTownHallDiscovered){
+                enemyTownHallLocation = getEnemyTownHallDiscovered();
+            }
+        }
+
+        strategy = StrategyManager.getStrategy(collectors,towers,barracks,units, enemyDiscovered, enemyTownHallDiscovered);
         strategy.setCoins(myUnits.getCoins());
         strategy.setMana(myUnits.getMana());
         strategy.planActions(myUnits,enemy);
@@ -130,8 +141,6 @@ public class IAManager : MonoBehaviour
             return false;
         }
     }
-
-    
 
     public Strategy getStrategy(){
         return strategy;
@@ -295,5 +304,17 @@ public class IAManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    public bool isEnemyTownHallDiscovered(){
+        foreach (GameObject unidad in myUnits.getGameObjects("Unit")){
+            if (unidad.GetComponent<Unidad>().GetBuildingsInRange(enemy).Count > 0){
+                return true;
+            }
+        }
+        return false;
+    }
+    public Vector2Int getEnemyTownHallDiscovered(){
+        return enemy.getGameObjects("TownHall")[0].GetComponent<Unidad>().Location;
     }
 }

@@ -131,14 +131,14 @@ public class Strategy
                     Unidad enemigoMasCercano = unitsList[index].GetComponent<Unidad>().GetEnemigoMasCercano(enemyUnits);
                     
                     if(ActionManager.isActionAvailable(mana,coin,ActionTypes.ATTACK_UNIT) && enemigoMasCercano != null){
-                        planAttackUnit(unitsList[index], enemyUnits.gameObject);
+                        planAttackUnit(unitsList[index], enemigoMasCercano.gameObject);
                     }
                     else if(ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT) && enemigoMasCercano != null){
                         
-                        planMoveUnit(unitsList[index], enemyUnits.gameObject);
+                        planMoveUnit(unitsList[index], enemigoMasCercano.gameObject);
                         
                         if (ActionManager.isActionAvailable(mana,coin,ActionTypes.ATTACK_UNIT)){
-                            planAttackUnit(unitsList[index], enemyUnits.gameObject);
+                            planAttackUnit(unitsList[index], enemigoMasCercano.gameObject);
                         }
                     }
                 }
@@ -166,19 +166,32 @@ public class Strategy
         List<GameObject> unitsList = myUnits.getGameObjects("Unit");
 
         while(ActionManager.isActionAvailable(mana,coin)){
+
             if (unitsList.Count > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT)){
-                
-                int index = Random.Range(0,unitsList.Count);
-                planMoveUnit(unitsList[index], enemyUnits.gameObject);
 
-                if (ActionManager.isActionAvailable(mana,coin,ActionTypes.ATTACK_UNIT)){
-                    planAttackUnit(unitsList[index], enemyUnits.gameObject);
-                }else if (ActionManager.isActionAvailable(mana,coin,ActionTypes.ATTACK_BUILDING)){
-                    planAttackBuilding(unitsList[index], enemyUnits.gameObject);
+                int tempMana = mana - ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getManaCost();
+                int tempCoin = coin - ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getCoinCost();
+
+                GameObject myUnitNearUnit = myUnits.GetUnitNearEnemyUnit(unitsList,enemyUnits);
+                GameObject myUnitNearBuilding = myUnits.GetUnitNearEnemyBuilding(unitsList,enemyUnits);
+                int indexNearUnit = unitsList.IndexOf(myUnitNearUnit);
+                int indexNearBuilding = unitsList.IndexOf(myUnitNearBuilding);
+
+                if (ActionManager.isActionAvailable(tempMana,tempCoin,ActionTypes.ATTACK_UNIT) && indexNearUnit >= 0){
+                    Unidad enemigoMasCercano = unitsList[indexNearUnit].GetComponent<Unidad>().GetEnemigoMasCercano(enemyUnits);
+                    planMoveUnit(unitsList[indexNearUnit], enemigoMasCercano.gameObject);
+                    planAttackUnit(unitsList[indexNearUnit], enemigoMasCercano.gameObject);
+                    unitsList.RemoveAt(indexNearUnit);
+                }else if (ActionManager.isActionAvailable(tempMana,tempCoin,ActionTypes.ATTACK_BUILDING) && indexNearBuilding >= 0){
+                    Unidad enemigoMasCercano = unitsList[indexNearBuilding].GetComponent<Unidad>().GetNearestEnemyBuilding(enemyUnits);
+                    planMoveUnit(unitsList[indexNearBuilding], enemigoMasCercano.gameObject);
+                    planAttackBuilding(unitsList[indexNearBuilding], enemigoMasCercano.gameObject);
+                    unitsList.RemoveAt(indexNearBuilding);
+                }else{
+                    int index = Random.Range(0,unitsList.Count);
+                    planMoveUnit(unitsList[index], enemyUnits.getGameObjects("TownHall")[0]);
+                    unitsList.RemoveAt(index);
                 }
-
-                unitsList.RemoveAt(index);
-
             }else if (ActionManager.isActionAvailable(mana,coin,ActionTypes.CREATE_UNIT)){
                 planCreateUnit();
             }else{
