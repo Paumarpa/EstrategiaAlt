@@ -179,23 +179,25 @@ public class IAManager : MonoBehaviour
     public void createBuildingAction(Action action){
 
         string resource;
+        Vector2Int location;
 
         switch (action.getType())
         {
             case ActionTypes.BUILD_COLLECTOR:
                 resource = "Prefabs/Collector";
+                location = getSlotNearTownHall("Collector",1);
                 break;
             case ActionTypes.BUILD_TOWER:
                 resource = "Prefabs/Tower";
+                location = getSlotNearTownHall("Tower",2);
                 break;
             case ActionTypes.BUILD_BARRACKS:
                 resource = "Prefabs/Barracks";
+                location = getSlotNearTownHall("Barracks",1);
                 break;
             default:
                 return;
         }
-
-        Vector2Int location = getSlotNearTownHall();
 
         if (isValidLocation(location)){
             GameObject building = Instantiate(Resources.Load(resource), grid.GetGlobalPosition(location.x,location.y), Quaternion.identity) as GameObject;
@@ -215,7 +217,7 @@ public class IAManager : MonoBehaviour
 
         string resource = "Prefabs/Warrior";
 
-        Vector2Int location = getSlotNearTownHall();
+        Vector2Int location = getSlotNearTownHall("Unit",3);
 
         if (isValidLocation(location)){
             GameObject unit = Instantiate(Resources.Load(resource), grid.GetGlobalPosition(location.x,location.y), Quaternion.identity) as GameObject;
@@ -261,15 +263,15 @@ public class IAManager : MonoBehaviour
         //cleanTownHallUbication(TH2);
     }
 
-    Vector2Int getSlotNearTownHall(){
+    Vector2Int getSlotNearTownHall(string type, int minDistance = 1){
         int radius = 1;
 
-        while (radius < 5){
+        while (radius < 7){
             for (int i = townHallLocation.x - radius; i <= townHallLocation.x + radius; i++)
             {
                 for (int j = townHallLocation.y - radius; j <= townHallLocation.y + radius; j++)
                 {
-                    if (isValidLocation(i,j)){
+                    if (isValidLocation(i,j) && !isNearOtherBuilding(new Vector2Int(i,j),minDistance)){
                         return new Vector2Int(i,j);
                     }
                 }
@@ -353,5 +355,22 @@ public class IAManager : MonoBehaviour
     }
     public Vector2Int getEnemyTownHallDiscovered(){
         return enemy.getGameObjects("TownHall")[0].GetComponent<Unidad>().Location;
+    }
+
+    public bool isNearOtherBuilding(Vector2Int newLocation, int minDistance){
+
+        List<GameObject> lista =  myUnits.getGameObjects("Tower");
+        lista.AddRange(myUnits.getGameObjects("Barracks"));
+        lista.AddRange(myUnits.getGameObjects("Collector"));
+        lista.AddRange(myUnits.getGameObjects("TownHall"));
+
+        foreach(GameObject item in lista){
+            Vector2Int location = item.GetComponent<Unidad>().Location;
+            if (Vector2Int.Distance(location,newLocation) < minDistance){
+                return true;
+            }
+        }
+
+        return false;
     }
 }
