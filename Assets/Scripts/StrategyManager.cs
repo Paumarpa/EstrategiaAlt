@@ -35,15 +35,17 @@ public static class StrategyManager{
 
     }
 
-    public static Strategy getStrategy(int collectors, int towers, int barracks, int units, bool enemyDiscovered, bool townhallDiscovered){ //TODO como se decide la estrategia
+    public static Strategy getStrategy(int collectors, int towers, int barracks, int units, bool enemyDiscovered, bool townhallDiscovered, bool enemyNearBase){ //TODO como se decide la estrategia
         if (townhallDiscovered){
             if (units < 5){
                 return strategies[(int)StrategyTypes.GROW];
+            }else if (enemyNearBase){
+                return strategies[(int)StrategyTypes.DEFENSE];
             }else{
                 return strategies[(int)StrategyTypes.ATTACK];
             }
         }else{
-            if (enemyDiscovered){
+            if (enemyDiscovered || enemyNearBase){
                 return strategies[(int)StrategyTypes.DEFENSE];
             }else{
                 if (units < 5 ){

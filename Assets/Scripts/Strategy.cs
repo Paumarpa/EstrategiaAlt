@@ -121,11 +121,25 @@ public class Strategy
         int barracks = myUnits.getNum("Barracks");
         int units = myUnits.getNum("Unit");
         List<GameObject> unitsList = myUnits.getGameObjects("Unit");
+        List<GameObject> towerList = myUnits.getGameObjects("Tower");
 
         while(ActionManager.isActionAvailable(mana,coin)){
 
             GameObject myUnit = myUnits.GetUnitNearEnemyUnit(unitsList,enemyUnits);
-            if (unitsList.Count > 0 && myUnit != null){
+            GameObject myTower = myUnits.GetUnitNearEnemyUnit(towerList,enemyUnits);
+
+            if (towerList.Count > 0 && myTower != null){
+                int index = towerList.IndexOf(myTower);
+                if (index >= 0){
+                    Unidad enemigoMasCercano = towerList[index].GetComponent<Unidad>().GetEnemigoMasCercano(enemyUnits);
+                    
+                    if(ActionManager.isActionAvailable(mana,coin,ActionTypes.ATTACK_UNIT) && enemigoMasCercano != null){
+                        planAttackUnit(towerList[index], enemigoMasCercano.gameObject);
+                    }
+                }
+
+                towerList.RemoveAt(index);
+            }else if (unitsList.Count > 0 && myUnit != null){
                 int index = unitsList.IndexOf(myUnit);
                 if (index >= 0){
                     Unidad enemigoMasCercano = unitsList[index].GetComponent<Unidad>().GetEnemigoMasCercano(enemyUnits);
@@ -164,10 +178,24 @@ public class Strategy
         int barracks = myUnits.getNum("Barracks");
         int units = myUnits.getNum("Unit");
         List<GameObject> unitsList = myUnits.getGameObjects("Unit");
+        List<GameObject> towerList = myUnits.getGameObjects("Tower");
 
         while(ActionManager.isActionAvailable(mana,coin)){
 
-            if (unitsList.Count > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT)){
+            GameObject myTower = myUnits.GetUnitNearEnemyUnit(towerList,enemyUnits);
+
+            if (towerList.Count > 0 && myTower != null){
+                int index = towerList.IndexOf(myTower);
+                if (index >= 0){
+                    Unidad enemigoMasCercano = towerList[index].GetComponent<Unidad>().GetEnemigoMasCercano(enemyUnits);
+                    
+                    if(ActionManager.isActionAvailable(mana,coin,ActionTypes.ATTACK_UNIT) && enemigoMasCercano != null){
+                        planAttackUnit(towerList[index], enemigoMasCercano.gameObject);
+                    }
+                }
+
+                towerList.RemoveAt(index);
+            }else if (unitsList.Count > 0 && ActionManager.isActionAvailable(mana,coin,ActionTypes.MOVE_UNIT)){
 
                 int tempMana = mana - ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getManaCost();
                 int tempCoin = coin - ActionManager.getActionSpecifications(ActionTypes.MOVE_UNIT).getCoinCost();

@@ -57,6 +57,7 @@ public class IAManager : MonoBehaviour
         int barracks = myUnits.getNum("Barracks");
         int units = myUnits.getNum("Unit");
         bool enemyDiscovered = IsEnemyDiscovered();
+        bool enemyNearBase = IsEnemyDiscoveredNearOurBase();
         
         if (!enemyTownHallDiscovered){
             enemyTownHallDiscovered = isEnemyTownHallDiscovered();
@@ -65,7 +66,7 @@ public class IAManager : MonoBehaviour
             }
         }
 
-        strategy = StrategyManager.getStrategy(collectors,towers,barracks,units, enemyDiscovered, enemyTownHallDiscovered);
+        strategy = StrategyManager.getStrategy(collectors,towers,barracks,units, enemyDiscovered, enemyTownHallDiscovered, enemyNearBase);
         strategy.setCoins(myUnits.getCoins());
         strategy.setMana(myUnits.getMana());
         strategy.planActions(myUnits,enemy);
@@ -297,7 +298,43 @@ public class IAManager : MonoBehaviour
     }
 
     public bool IsEnemyDiscovered(){
+
+        foreach (GameObject unidad in myUnits.getGameObjects("Tower")){
+            if (unidad.GetComponent<Unidad>().GetEnemigosEnRango(enemy).Count > 0){
+                return true;
+            }
+        }
+
         foreach (GameObject unidad in myUnits.getGameObjects("Unit")){
+            if (unidad.GetComponent<Unidad>().GetEnemigosEnRango(enemy).Count > 0){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsEnemyDiscoveredNearOurBase(){
+
+        foreach (GameObject unidad in myUnits.getGameObjects("Tower")){
+            if (unidad.GetComponent<Unidad>().GetEnemigosEnRango(enemy).Count > 0){
+                return true;
+            }
+        }
+
+        foreach (GameObject unidad in myUnits.getGameObjects("Collector")){
+            if (unidad.GetComponent<Unidad>().GetEnemigosEnRango(enemy).Count > 0){
+                return true;
+            }
+        }
+
+        foreach (GameObject unidad in myUnits.getGameObjects("Barracks")){
+            if (unidad.GetComponent<Unidad>().GetEnemigosEnRango(enemy).Count > 0){
+                return true;
+            }
+        }
+
+        foreach (GameObject unidad in myUnits.getGameObjects("TownHall")){
             if (unidad.GetComponent<Unidad>().GetEnemigosEnRango(enemy).Count > 0){
                 return true;
             }

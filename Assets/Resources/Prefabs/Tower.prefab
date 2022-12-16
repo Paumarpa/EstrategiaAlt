@@ -103,11 +103,11 @@ MonoBehaviour:
   velocidad: 0
   seHaMovido: 0
   numJugador: 1
-  rangoAtaque: 0
+  rangoAtaque: 3
   haAtacado: 0
   armaIcono: {fileID: 6692405927313590402}
-  vida: 20
-  danoAtaque: 0
+  vida: 10
+  danoAtaque: 5
   armadura: 0
   ispathfinding: 0
   Location: {x: 0, y: 0}

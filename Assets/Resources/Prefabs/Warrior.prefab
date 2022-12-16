@@ -108,7 +108,7 @@ MonoBehaviour:
   armaIcono: {fileID: 6692405927313590402}
   vida: 5
   danoAtaque: 6
-  armadura: 1
+  armadura: 0
   ispathfinding: 0
   Location: {x: 0, y: 0}
 --- !u!61 &2529332519181101705
