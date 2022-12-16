@@ -9,6 +9,8 @@ public class Casilla : MonoBehaviour
     public Sprite[] tileGraphics;
     public LayerMask inaccesible;
     public float tamanoCasilla;
+    
+    
 
     public Color colorHighlight;
 
@@ -26,6 +28,8 @@ public class Casilla : MonoBehaviour
         rend = GetComponent<SpriteRenderer>();
         int rand = Random.Range(0, tileGraphics.Length);
         rend.sprite = tileGraphics[rand];
+        
+        
         gm = FindObjectOfType<GameMaster>();
     }
 

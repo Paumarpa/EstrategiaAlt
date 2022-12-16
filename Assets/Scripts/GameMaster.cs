@@ -9,12 +9,18 @@ public class GameMaster : MonoBehaviour
     public int turno = 1;
 
     private Grid grid;
+    private Mapa mapa;
+
+    [SerializeField] private GameObject P1;
+    [SerializeField] private GameObject P2;
 
     private Vector2Int TH1,TH2;
 
     private void Start(){
 
         grid = GameObject.Find("Pathfinding").GetComponent<Grid>();
+        mapa = GameObject.Find("Mapa").GetComponent<Mapa>();
+
     }
 
     public void resetCasillas()
@@ -25,6 +31,17 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+    private void visibilizar(int turno)
+    {
+
+        foreach(Unidad unidad in FindObjectsOfType<Unidad>())
+        {
+            if(unidad.numJugador == turno)
+            {
+               //Casilla = mapa.encon
+            }
+        }
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
