@@ -151,7 +151,7 @@ public class IAManager : MonoBehaviour
         Unidad unidad = action.gameObject.GetComponent<Unidad>();
         unidad.OnMouseDownIA();
         if(action.target == null){
-            unidad.MoveToExploreIA(this.townHallLocation);
+            unidad.MoveToExploreIA(myUnits,this.townHallLocation);
         }else{
             unidad.MoveToAttackIA(action.target);
         }
