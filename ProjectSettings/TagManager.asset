@@ -8,6 +8,8 @@ TagManager:
   - Tower
   - Barracks
   - Unit
+  - TownHall
+  - UI
   layers:
   - Default
   - TransparentFX

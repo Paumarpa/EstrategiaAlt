@@ -18,6 +18,8 @@ public class Casilla : MonoBehaviour
 
     public Vector2Int Location;
     GameMaster gm;
+    private Color colorSeleccionado = Color.blue;
+    private Color colorDeSeleccionado = Color.white;
 
 
     
@@ -35,7 +37,7 @@ public class Casilla : MonoBehaviour
         if (esAccesible())
         {
             transform.localScale += Vector3.one * tamanoCasilla;
-
+            rend.material.color = colorSeleccionado;
         }
         
     }
@@ -45,6 +47,7 @@ public class Casilla : MonoBehaviour
         if (esAccesible())
         {
             transform.localScale -= Vector3.one * tamanoCasilla;
+            rend.material.color = colorDeSeleccionado;
         }
     }
 
