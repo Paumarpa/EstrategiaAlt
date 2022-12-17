@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerOrIA : MonoBehaviour
 {
     const int MANA_MAX = 15;
-    private bool human = false;
+    [SerializeField] private bool human = false;
     public IAManager IA;
     public int mana = 1;
     public int coins = 50;

@@ -123,6 +123,71 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &22183680
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 22183683}
+  - component: {fileID: 22183682}
+  - component: {fileID: 22183681}
+  m_Layer: 0
+  m_Name: IA1
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &22183681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22183680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1326faae29e4a994fbb79710e929fd9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  human: 0
+  IA: {fileID: 0}
+  mana: 1
+  coins: 50
+--- !u!114 &22183682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22183680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 112912d187c0157ebafa89b5319678d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnos: 1
+  GMS: {fileID: 976626726}
+  id: 2
+  enemy: {fileID: 353433384}
+--- !u!4 &22183683
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22183680}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.70560676, y: -0.08102551, z: -0.8014251}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &33292886
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,7 +580,7 @@ MonoBehaviour:
   turnos: 1
   GMS: {fileID: 976626726}
   id: 2
-  enemy: {fileID: 701311707}
+  enemy: {fileID: 0}
 --- !u!4 &353433383
 Transform:
   m_ObjectHideFlags: 0
@@ -543,7 +608,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1326faae29e4a994fbb79710e929fd9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IA: {fileID: 353433382}
+  human: 0
+  IA: {fileID: 0}
   mana: 1
   coins: 50
 --- !u!1 &450020157
@@ -981,70 +1047,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &701311704
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 701311706}
-  - component: {fileID: 701311705}
-  - component: {fileID: 701311707}
-  m_Layer: 0
-  m_Name: IA1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &701311705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701311704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 112912d187c0157ebafa89b5319678d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turnos: 1
-  GMS: {fileID: 976626726}
-  id: 1
-  enemy: {fileID: 0}
---- !u!4 &701311706
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701311704}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.7339158, y: -1.0719671, z: -1.0039976}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &701311707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701311704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1326faae29e4a994fbb79710e929fd9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IA: {fileID: 701311705}
-  mana: 1
-  coins: 50
 --- !u!1 &791052356
 GameObject:
   m_ObjectHideFlags: 0
@@ -1343,7 +1345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25835925142f57c49a0d29dd9d1814f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  limit: 0
+  limit: 30
 --- !u!114 &976626729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2091,7 +2093,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e0c3130e29b81c20b68b37ca655cde0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1: {fileID: 701311704}
+  player1: {fileID: 0}
   player2: {fileID: 353433381}
   master: {fileID: 976626726}
   player1TextCoins: {fileID: 1043317560}

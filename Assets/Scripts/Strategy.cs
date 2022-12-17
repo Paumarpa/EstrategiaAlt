@@ -6,9 +6,9 @@ public class Strategy
     private StrategyTypes type;
     private List<Action> actions;
     private List<Action> plannedActions;
-
-    private int mana;
-    private int coin;
+    // publico para el jugador
+    public int mana;
+    public int coin;
 
     public Strategy(StrategyTypes type, List<Action> actions = null){
         this.type = type;
