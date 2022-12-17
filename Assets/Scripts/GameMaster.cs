@@ -28,22 +28,14 @@ public class GameMaster : MonoBehaviour
         foreach(Casilla casilla in FindObjectsOfType<Casilla>())
         {
             casilla.Reset();
+            
         }
     }
 
-    private void visibilizar(int turno)
-    {
-
-        foreach(Unidad unidad in FindObjectsOfType<Unidad>())
-        {
-            if(unidad.numJugador == turno)
-            {
-               //Casilla = mapa.encon
-            }
-        }
-    }
+    
     private void Update()
     {
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             finalizarTurno();

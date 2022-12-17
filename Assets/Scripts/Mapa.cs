@@ -83,6 +83,55 @@ public class Mapa : MonoBehaviour
         
     }
 
+    public void visibilizarCasillasUnidad(Casilla cas, int vision)
+    {
+
+        if (cas == null)
+        {
+            return;
+        }
+
+        if (vision == 0)
+        {
+            cas.visibilizar();
+            return;
+        }
+
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (Mathf.Abs(x) - Mathf.Abs(y) == 0)
+                    continue;
+                else
+                {
+                    Casilla newCasilla = encontrarCasillaPos(new Vector2(cas.mapaX + x, cas.mapaY + y));
+                    if (newCasilla == null)
+                    {
+                        continue;
+                    }
+                    
+                    if (!newCasilla.esAccesible())
+                    {
+                        newCasilla.visibilizar();
+                        continue;
+                    }
+                    else
+                    {
+                        newCasilla.visibilizar();
+                        visibilizarCasillasUnidad(newCasilla, vision - 1);
+
+                    }
+                       
+
+                }
+            }
+
+        }
+    }
+    
+
+
         public Casilla encontrarCasillaPos(Vector2 pos)
         {
             if (casillas.TryGetValue(pos, out var casilla)) {

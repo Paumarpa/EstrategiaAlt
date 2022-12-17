@@ -46,7 +46,28 @@ public class Unidad : MonoBehaviour
         mapa = FindObjectOfType<Mapa>();
 
     }
+    private void Update()
+    {
+        if(gm.turno == numJugador)
+        {
+            visibilizar();
+        }
+        
+    }
+     void visibilizar()
+    {
 
+            Casilla cas = mapa.encontrarCasillaLocation(Location);
+            mapa.visibilizarCasillasUnidad(cas, velocidad);
+            /*List<Casilla> visionUnidades = mapa.GetCasillasVisibles(cas, velocidad);
+            foreach (Casilla c in visionUnidades)
+            {
+                c.visibilizar();
+            }*/
+        
+        
+        
+    }
     public void OnMouseDown()
     {
         ResetIconosArmas();

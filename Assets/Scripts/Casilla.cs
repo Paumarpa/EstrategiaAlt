@@ -38,7 +38,7 @@ public class Casilla : MonoBehaviour
     {
         if (esAccesible())
         {
-            transform.localScale += Vector3.one * tamanoCasilla;
+            //transform.localScale += Vector3.one * tamanoCasilla;
 
         }
         
@@ -48,7 +48,7 @@ public class Casilla : MonoBehaviour
     {
         if (esAccesible())
         {
-            transform.localScale -= Vector3.one * tamanoCasilla;
+            //transform.localScale -= Vector3.one * tamanoCasilla;
         }
     }
 
@@ -62,6 +62,10 @@ public class Casilla : MonoBehaviour
         else
             return true;
     }
+    public void visibilizar()
+    {
+        transform.GetChild(0).gameObject.SetActive(false);
+    }
 
     public void highLight()
     {
@@ -73,6 +77,7 @@ public class Casilla : MonoBehaviour
     {
         rend.color = Color.white;
         accesible = false;
+        transform.GetChild(0).gameObject.SetActive(true);
     }
     public void OnMouseDown()
     {
@@ -82,9 +87,5 @@ public class Casilla : MonoBehaviour
         }
     }
     
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+ 
 }
