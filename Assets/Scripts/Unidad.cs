@@ -49,7 +49,7 @@ public class Unidad : MonoBehaviour
     }
     private void Update()
     {
-        if(gm.turno == numJugador)
+        if(gm.turno == numJugador && gm.FoW ==true)
         {
             visibilizar();
         }

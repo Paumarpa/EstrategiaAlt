@@ -38,7 +38,7 @@ public class Mapa : MonoBehaviour
             }
         }
     }
-
+   
 
     public List<Casilla> GetCasillasVisibles(Casilla casilla,int vision)
     {
