@@ -239,7 +239,7 @@ public class Unidad : MonoBehaviour
     }
 
     //Alejarse lo más posible del ayuntamiento
-    public void MoveToExploreIA(Vector2Int townHallLocation){
+    public void MoveToExploreIA(PlayerOrIA myUnits, Vector2Int townHallLocation){
         
         Casilla actual = mapa.encontrarCasillaLocation(this.Location);
         List<Casilla> casillas = mapa.GetCasillasVisibles(actual, velocidad);
@@ -251,6 +251,7 @@ public class Unidad : MonoBehaviour
             foreach (Casilla casilla in casillas)
             {
                 float distance = Vector2Int.Distance(townHallLocation, casilla.Location);
+                //float distance = DistanceToOtherUnits(myUnits,casilla.Location);
                 if (distance >= maxDistance){
                     seleccionada = casilla;
                     maxDistance = distance;
@@ -259,6 +260,26 @@ public class Unidad : MonoBehaviour
             this.Location = seleccionada.Location;
             seleccionada.OnMouseDown();
         }
+    }
+
+    public float DistanceToOtherUnits(PlayerOrIA myUnits, Vector2Int location){
+
+        List<GameObject> lista =   myUnits.getGameObjects("Tower");
+        lista.AddRange(myUnits.getGameObjects("Barracks"));
+        lista.AddRange(myUnits.getGameObjects("Collector"));
+        lista.AddRange(myUnits.getGameObjects("TownHall"));
+        lista.AddRange(myUnits.getGameObjects("Unit"));
+        lista.Remove(gameObject);
+
+        float distance = 0;
+
+        foreach (GameObject item in lista)
+        {
+            Unidad unidad = item.GetComponent<Unidad>();
+            distance += Vector2Int.Distance(unidad.Location,location);
+        }
+
+        return distance;
     }
 
 
