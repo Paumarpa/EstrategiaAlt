@@ -9,6 +9,8 @@ public class Casilla : MonoBehaviour
     public Sprite[] tileGraphics;
     public LayerMask inaccesible;
     public float tamanoCasilla;
+    
+    
 
     public Color colorHighlight;
 
@@ -26,6 +28,8 @@ public class Casilla : MonoBehaviour
         rend = GetComponent<SpriteRenderer>();
         int rand = Random.Range(0, tileGraphics.Length);
         rend.sprite = tileGraphics[rand];
+        
+        
         gm = FindObjectOfType<GameMaster>();
     }
 
@@ -34,7 +38,7 @@ public class Casilla : MonoBehaviour
     {
         if (esAccesible())
         {
-            transform.localScale += Vector3.one * tamanoCasilla;
+            //transform.localScale += Vector3.one * tamanoCasilla;
 
         }
         
@@ -44,7 +48,7 @@ public class Casilla : MonoBehaviour
     {
         if (esAccesible())
         {
-            transform.localScale -= Vector3.one * tamanoCasilla;
+            //transform.localScale -= Vector3.one * tamanoCasilla;
         }
     }
 
@@ -58,6 +62,10 @@ public class Casilla : MonoBehaviour
         else
             return true;
     }
+    public void visibilizar()
+    {
+        transform.GetChild(0).gameObject.SetActive(false);
+    }
 
     public void highLight()
     {
@@ -69,6 +77,16 @@ public class Casilla : MonoBehaviour
     {
         rend.color = Color.white;
         accesible = false;
+
+        if(gm.FoW == true)
+        {
+            transform.GetChild(0).gameObject.SetActive(true);
+        }
+        else
+        {
+            transform.GetChild(0).gameObject.SetActive(false);
+        }
+        
     }
     public void OnMouseDown()
     {
@@ -78,9 +96,5 @@ public class Casilla : MonoBehaviour
         }
     }
     
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+ 
 }

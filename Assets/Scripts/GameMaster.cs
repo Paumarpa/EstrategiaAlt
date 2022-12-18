@@ -7,30 +7,43 @@ public class GameMaster : MonoBehaviour
     public Unidad unidadSeleccionada;
 
     public int turno = 1;
-
+    public bool FoW;
     private Grid grid;
+    private Mapa mapa;
+
+    [SerializeField] private GameObject P1;
+    [SerializeField] private GameObject P2;
 
     private Vector2Int TH1,TH2;
 
     private void Start(){
 
         grid = GameObject.Find("Pathfinding").GetComponent<Grid>();
-    }
+        mapa = GameObject.Find("Mapa").GetComponent<Mapa>();
 
+    }
+    public void FoWActivado(bool botonFoW)
+    {
+        FoW = botonFoW;
+    }
     public void resetCasillas()
     {
         foreach(Casilla casilla in FindObjectsOfType<Casilla>())
         {
             casilla.Reset();
+            
         }
     }
 
+    
     private void Update()
     {
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             finalizarTurno();
         }
+        
     }
 
     public void finalizarTurno()

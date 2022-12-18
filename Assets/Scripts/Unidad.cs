@@ -11,6 +11,7 @@ public class Unidad : MonoBehaviour
     //movimiento
     public int velocidad;
     public bool seHaMovido;
+    public int vision;
 
     //equipo
     public int numJugador;
@@ -46,7 +47,28 @@ public class Unidad : MonoBehaviour
         mapa = FindObjectOfType<Mapa>();
 
     }
+    private void Update()
+    {
+        if(gm.turno == numJugador && gm.FoW ==true)
+        {
+            visibilizar();
+        }
+        
+    }
+     void visibilizar()
+    {
 
+            Casilla cas = mapa.encontrarCasillaLocation(Location);
+            mapa.visibilizarCasillasUnidad(cas, vision);
+            /*List<Casilla> visionUnidades = mapa.GetCasillasVisibles(cas, velocidad);
+            foreach (Casilla c in visionUnidades)
+            {
+                c.visibilizar();
+            }*/
+        
+        
+        
+    }
     public void OnMouseDown()
     {
         ResetIconosArmas();
