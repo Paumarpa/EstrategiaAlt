@@ -11,6 +11,7 @@ public class Unidad : MonoBehaviour
     //movimiento
     public int velocidad;
     public bool seHaMovido;
+    public int vision;
 
     //equipo
     public int numJugador;
@@ -58,7 +59,7 @@ public class Unidad : MonoBehaviour
     {
 
             Casilla cas = mapa.encontrarCasillaLocation(Location);
-            mapa.visibilizarCasillasUnidad(cas, velocidad);
+            mapa.visibilizarCasillasUnidad(cas, vision);
             /*List<Casilla> visionUnidades = mapa.GetCasillasVisibles(cas, velocidad);
             foreach (Casilla c in visionUnidades)
             {

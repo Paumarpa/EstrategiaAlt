@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 1c53d4f02959d834fb0b78d6f285fbb5, type: 3}
-  m_Color: {r: 0, g: 0.122285366, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.010215605, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -102,6 +102,7 @@ MonoBehaviour:
   seleccionado: 0
   velocidad: 3
   seHaMovido: 0
+  vision: 3
   numJugador: 2
   rangoAtaque: 1
   haAtacado: 0

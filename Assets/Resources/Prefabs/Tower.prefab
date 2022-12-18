@@ -102,6 +102,7 @@ MonoBehaviour:
   seleccionado: 0
   velocidad: 0
   seHaMovido: 0
+  vision: 2
   numJugador: 1
   rangoAtaque: 3
   haAtacado: 0
