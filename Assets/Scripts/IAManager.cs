@@ -7,7 +7,7 @@ public class IAManager : MonoBehaviour
     public int turnos = 1;
     public GameMaster GMS;
     public int id = 2;
-    const float SIMULATION_STEP = 0.5f;
+    public float SIMULATION_STEP = 0.5f;
 
     private Grid grid;
 

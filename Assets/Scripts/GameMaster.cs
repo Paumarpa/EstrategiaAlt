@@ -19,7 +19,7 @@ public class GameMaster : MonoBehaviour
     private void Start(){
 
         grid = GameObject.Find("Pathfinding").GetComponent<Grid>();
-        mapa = GameObject.Find("Mapa").GetComponent<Mapa>();
+        mapa = GameObject.Find("Grid").GetComponent<Mapa>();
 
     }
     public void FoWActivado(bool botonFoW)
