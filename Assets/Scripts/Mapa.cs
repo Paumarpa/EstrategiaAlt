@@ -6,7 +6,7 @@ public class Mapa : MonoBehaviour
 {
 
 
-    [SerializeField] private int ancho, alto;
+    [SerializeField] public int ancho, alto;
     [SerializeField] private Casilla casillaPrefab;
     [SerializeField] private GameObject obstaculoPrefab;
 

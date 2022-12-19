@@ -49,37 +49,41 @@ public class Player : MonoBehaviour
     }
     void FixedUpdate(){
         if(isBuilding){
-        
+            // CORREGIR
             transform.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x,Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 1.0f );
             if(Input.GetMouseButton(0)){
-                isBuilding = false;
-                string tag = gameObject.tag;
-                Debug.Log("TAG: "+gameObject.tag);
-                if(gameObject.tag == "Collector"){
-                    if(GameObject.Find("GameMaster").GetComponent<PlayerManager>().LOCKED_BARRACKS){
-                        GameObject.Find("GameMaster").GetComponent<PlayerManager>().LOCKED_BARRACKS = false;
-                        GameObject.Find("GameMaster").GetComponent<PlayerManager>().Unlock("Barrack");
-                        GameObject.Find("GameMaster").GetComponent<PlayerManager>().Unlock("Warrior");
-                        Debug.Log("UNLOCKED Barracks");
+                Casilla seleccionada = mapa.encontrarCasillaPos(new Vector2(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y));
+                if(seleccionada.esAccesible()){
+                    seleccionada.highLight();
+                    isBuilding = false;
+                    string tag = gameObject.tag;
+                    Debug.Log("TAG: "+gameObject.tag);
+                    if(gameObject.tag == "Collector"){
+                        if(GameObject.Find("GameMaster").GetComponent<PlayerManager>().LOCKED_BARRACKS){
+                            GameObject.Find("GameMaster").GetComponent<PlayerManager>().LOCKED_BARRACKS = false;
+                            GameObject.Find("GameMaster").GetComponent<PlayerManager>().Unlock("Barrack");
+                            GameObject.Find("GameMaster").GetComponent<PlayerManager>().Unlock("Warrior");
+                            Debug.Log("UNLOCKED Barracks");
+                        }
+                        // if(ActionManager.isActionAvailable(GetComponent<Strategy>().mana,GetComponent<Strategy>().coin,ActionTypes.BUILD_COLLECTOR)){
+                        //     GetComponent<Strategy>().planBuildCollector();
+                        // }
                     }
-                    // if(ActionManager.isActionAvailable(GetComponent<Strategy>().mana,GetComponent<Strategy>().coin,ActionTypes.BUILD_COLLECTOR)){
-                    //     GetComponent<Strategy>().planBuildCollector();
-                    // }
-                }
-                else if(gameObject.tag == "Barracks"){
-                    if(GameObject.Find("GameMaster").GetComponent<PlayerManager>().LOCKED_TOWER){
-                        GameObject.Find("GameMaster").GetComponent<PlayerManager>().LOCKED_TOWER = false;
-                        GameObject.Find("GameMaster").GetComponent<PlayerManager>().Unlock("Tower");
-                        Debug.Log("UNLOCKED Tower");
+                    else if(gameObject.tag == "Barracks"){
+                        if(GameObject.Find("GameMaster").GetComponent<PlayerManager>().LOCKED_TOWER){
+                            GameObject.Find("GameMaster").GetComponent<PlayerManager>().LOCKED_TOWER = false;
+                            GameObject.Find("GameMaster").GetComponent<PlayerManager>().Unlock("Tower");
+                            Debug.Log("UNLOCKED Tower");
+                        }
                     }
+                    else if(gameObject.tag == "Tower"){
+                        // if(ActionManager.isActionAvailable(GetComponent<Strategy>().mana,GetComponent<Strategy>().coin,ActionTypes.BUILD_TOWER)){
+                        //     GetComponent<Strategy>().planBuildTower();
+                        // }
+                        
+                    }
+                    transform.position = new Vector3Int((int)Mathf.Round(transform.position.x), (int)Mathf.Round(transform.position.y), 1);
                 }
-                else if(gameObject.tag == "Tower"){
-                    // if(ActionManager.isActionAvailable(GetComponent<Strategy>().mana,GetComponent<Strategy>().coin,ActionTypes.BUILD_TOWER)){
-                    //     GetComponent<Strategy>().planBuildTower();
-                    // }
-                    
-                }
-                transform.position = new Vector3Int((int)Mathf.Round(transform.position.x), (int)Mathf.Round(transform.position.y), 1);
                 // POR HACER: Colocar BUILD y cambiar area a color normal --> booleano false
                 //mapa.GetComponent<Mapa>().encontrarCasillaPos(new Vector2((int)transform.position.x, (int)transform.position.y));
                 //Destroy(this.gameObject);
